@@ -5,14 +5,21 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import BlueprintMap from '@/components/BlueprintMap';
 import DetailView from '@/components/DetailView';
+import LoadingScreen from '@/components/LoadingScreen';
 import { Section } from '@/components/types';
 import { sectionDetails } from '@/components/sectionData';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<Section>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div className="h-screen bg-[#030712] text-white font-mono overflow-hidden relative">
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
+      </AnimatePresence>
+
       {/* Blueprint Grid Background */}
       <div className="absolute inset-0 opacity-5" style={{
         backgroundImage: `
@@ -31,7 +38,7 @@ export default function Home() {
             {!activeSection ? (
               <BlueprintMap onSectionClick={setActiveSection} />
             ) : (
-              <DetailView 
+              <DetailView
                 section={activeSection}
                 data={sectionDetails[activeSection]}
                 onClose={() => setActiveSection(null)}
