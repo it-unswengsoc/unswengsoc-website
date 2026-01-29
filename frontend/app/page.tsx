@@ -6,47 +6,50 @@ import Navbar from '@/components/Navbar';
 import BlueprintMap from '@/components/BlueprintMap';
 import DetailView from '@/components/DetailView';
 import LoadingScreen from '@/components/LoadingScreen';
+import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
 import { Section } from '@/components/types';
 import { sectionDetails } from '@/components/sectionData';
+import BlueprintBackground from '@/components/BlueprintBackground';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState<Section>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="h-screen bg-[#030712] text-white font-mono overflow-hidden relative">
+    <div className="min-h-screen text-white font-mono overflow-x-hidden relative" style={{ background: 'var(--background)' }}>
       {/* Loading Screen */}
       <AnimatePresence>
         {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
 
-      {/* Blueprint Grid Background */}
-      <div className="absolute inset-0 opacity-5" style={{
-        backgroundImage: `
-          linear-gradient(white 1px, transparent 1px),
-          linear-gradient(90deg, white 1px, transparent 1px)
-        `,
-        backgroundSize: '50px 50px'
-      }}></div>
+      {/* Blueprint Background */}
+      <BlueprintBackground />
 
       <Navbar />
 
-      {/* Main Content */}
-      <main className="relative w-full flex items-center justify-center p-12" style={{ height: 'calc(100vh - 88px)' }}>
-        <div className="relative w-full h-full max-w-7xl">
+      {/* Blueprint Map Section */}
+      <section id="blueprint" className="relative w-full flex items-center justify-center p-5 min-h-[calc(100vh-88px)]">
+        <div className="relative w-full h-[calc(100vh-128px)]">
           <AnimatePresence mode="wait">
             {!activeSection ? (
               <BlueprintMap onSectionClick={setActiveSection} />
             ) : (
               <DetailView
-                section={activeSection}
                 data={sectionDetails[activeSection]}
+                section={activeSection}
                 onClose={() => setActiveSection(null)}
               />
             )}
           </AnimatePresence>
         </div>
-      </main>
+      </section>
+
+      {/* Contact Section */}
+      <ContactSection />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

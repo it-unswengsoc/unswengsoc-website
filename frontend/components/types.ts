@@ -1,10 +1,18 @@
 import { ReactNode } from 'react';
 
-export type Section = 'about' | 'events' | 'team' | 'programs' | 'jobs' | null;
+// Section types - updated mapping:
+// - about: About Us / Our Team (center, animated sprite)
+// - events: Events (flask)
+// - jobs: Jobs Board (briefcase)
+// - programs: Programs (gear)
+// - sponsors: Sponsors (helmet)
+export type Section = 'about' | 'events' | 'jobs' | 'programs' | 'sponsors' | null;
 
 export interface SectionData {
   title: string;
-  content: string;
+  subtitle: string;
+  content: ReactNode;
+  sectionKey?: Section;
 }
 
 export interface SectionConfig {
@@ -14,4 +22,33 @@ export interface SectionConfig {
   sectionLetter: string;
   title: string;
   icon: ReactNode;
+}
+
+export interface TeamMember {
+  name: string;
+  role: string;
+}
+
+export interface Event {
+  title: string;
+  date: string;
+  description: string;
+}
+
+export interface Sponsor {
+  name: string;
+  tier: 'gold' | 'silver' | 'bronze';
+}
+
+export interface Job {
+  title: string;
+  company: string;
+  type: 'internship' | 'graduate' | 'part-time';
+  description: string;
+}
+
+export interface Program {
+  title: string;
+  description: string;
+  status: 'open' | 'coming-soon' | 'closed';
 }
