@@ -12,6 +12,7 @@ interface BlueprintElementProps {
   onClick: () => void;
   animationDelay?: number;
   className?: string;
+  disableEntrance?: boolean;
 }
 
 export default function BlueprintElement({
@@ -23,6 +24,7 @@ export default function BlueprintElement({
   onClick,
   animationDelay = 0,
   className = '',
+  disableEntrance = false,
 }: BlueprintElementProps) {
   const [isHovered, setIsHovered] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
@@ -105,18 +107,8 @@ export default function BlueprintElement({
     }
   };
 
-  return (
-    <motion.div
-      ref={elementRef}
-      className={`blueprint-element ${className}`}
-      style={style}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, delay: animationDelay, ease: 'easeOut' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-    >
+  const content = (
+    <>
       {/* SVG Content */}
       <div className="blueprint-svg-container">
         {typeof children === 'function' ? children(isHovered) : children}
@@ -131,16 +123,6 @@ export default function BlueprintElement({
       {/* Label */}
       <div style={getLabelStyles()}>{label}</div>
 
-      {/* Click hint
-      <div
-        className="click-hint"
-        style={{
-          opacity: isHovered ? 0.7 : 0,
-        }}
-      >
-        Click to explore
-      </div> */}
-
       {/* Glow effect on hover */}
       <div
         className="element-glow"
@@ -148,6 +130,39 @@ export default function BlueprintElement({
           opacity: isHovered ? 0.5 : 0,
         }}
       />
+    </>
+  );
+
+  if (disableEntrance) {
+    return (
+      <div
+        ref={elementRef}
+        data-element={id}
+        className={`blueprint-element ${className}`}
+        style={{ ...style, opacity: 0 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={onClick}
+      >
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      ref={elementRef}
+      data-element={id}
+      className={`blueprint-element ${className}`}
+      style={style}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: animationDelay, ease: 'easeOut' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+    >
+      {content}
     </motion.div>
   );
 }

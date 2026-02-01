@@ -298,3 +298,30 @@ body {
   border-color: var(--blueprint-border);
 }
 
+/* Open Blueprint button */
+.open-blueprint-btn {
+  border: 1px solid rgba(65, 145, 220, 0.4);
+  padding: 0.75rem 2rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.open-blueprint-btn:hover {
+  background: rgba(65, 145, 220, 0.1);
+  border-color: var(--blueprint-border);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Blueprint text annotations */
+.blueprint-annotation {
+  position: absolute;
+  font-family: 'Courier New', monospace;
+  color: white;
+  pointer-events: none;
+}
+
