@@ -5,7 +5,7 @@ import { Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
 export default function ContactSection() {
   return (
     <section id="contact" className="relative z-10 py-20 px-8">
-      <div className="max-w-4xl mx-auto">
+      <div id="contact-inner" className="max-w-4xl mx-auto">
         <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-2 tracking-tight">
           Contact Us
         </h2>

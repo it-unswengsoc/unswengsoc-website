@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import BlueprintElement from './BlueprintElement';
 import AnimatedSprite from './AnimatedSprite';
 import { Section } from './types';
@@ -56,16 +55,13 @@ const BRIEF_SPRITE_CONFIG = {
 
 interface BlueprintMapProps {
   onSectionClick: (section: Section) => void;
+  disableEntrance?: boolean;
 }
 
-export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
+export default function BlueprintMap({ onSectionClick, disableEntrance = false }: BlueprintMapProps) {
   return (
-    <motion.div
-      key="map"
+    <div
       className="blueprint-canvas"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
     >
       {/* Events - Flask Sprite */}
       <BlueprintElement
@@ -74,13 +70,14 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         style={{
           position: 'absolute',
           left: '10%',
-          top: '7%',
+          top: '20%',
           width: '120px',
           height: '160px',
         }}
         labelPosition="right"
         onClick={() => onSectionClick('events')}
         animationDelay={0}
+        disableEntrance={disableEntrance}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -103,13 +100,14 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         style={{
           position: 'absolute',
           left: '15%',
-          top: '30%',
+          top: '50%',
           width: '300px',
           height: '300px',
         }}
         labelPosition="right"
         onClick={() => onSectionClick('sponsors')}
         animationDelay={0.2}
+        disableEntrance={disableEntrance}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -132,7 +130,7 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         style={{
           position: 'absolute',
           left: '37%',
-          top: '15%',
+          top: '26%',
           transform: 'translate(-50%, -50%)',
           width: '400px',
           height: '400px',
@@ -140,6 +138,7 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         labelPosition="bottom"
         onClick={() => onSectionClick('about')}
         animationDelay={0.4}
+        disableEntrance={disableEntrance}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -150,7 +149,7 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
             rows={LOGO_SPRITE_CONFIG.rows}
             totalFrames={LOGO_SPRITE_CONFIG.totalFrames}
             isHovered={isHovered}
-            displaySize={300}
+            displaySize={350}
           />
         )}
       </BlueprintElement>
@@ -162,13 +161,14 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         style={{
           position: 'absolute',
           right: '15%',
-          top: '8%',
+          top: '10%',
           width: '200px',
           height: '200px',
         }}
         labelPosition="left"
         onClick={() => onSectionClick('programs')}
         animationDelay={0.6}
+        disableEntrance={disableEntrance}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -190,7 +190,7 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         label="jobs board"
         style={{
           position: 'absolute',
-          right: '10%',
+          right: '15%',
           bottom: '15%',
           width: '130px',
           height: '100px',
@@ -198,6 +198,7 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
         labelPosition="left"
         onClick={() => onSectionClick('jobs')}
         animationDelay={0.8}
+        disableEntrance={disableEntrance}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -208,20 +209,11 @@ export default function BlueprintMap({ onSectionClick }: BlueprintMapProps) {
             rows={BRIEF_SPRITE_CONFIG.rows}
             totalFrames={BRIEF_SPRITE_CONFIG.totalFrames}
             isHovered={isHovered}
-            displaySize={200}
+            displaySize={240}
           />
         )}
       </BlueprintElement>
 
-      {/* Title Section */}
-      <div className="title-section">
-        <h1 className="main-title">UNSW Engineering Society</h1>
-        <p className="subtitle">
-          <span className="subtitle-bracket">[</span>
-          Innovate. Create. Engineer.
-          <span className="subtitle-bracket">]</span>
-        </p>
-      </div>
-    </motion.div>
+    </div>
   );
 }

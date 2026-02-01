@@ -8,6 +8,8 @@ import { ReactNode } from 'react';
 // - sponsors: Sponsors (helmet)
 export type Section = 'about' | 'events' | 'jobs' | 'programs' | 'sponsors' | null;
 
+export type Screen = 'title' | 'blueprint' | 'contact';
+
 export interface SectionData {
   title: string;
   subtitle: string;

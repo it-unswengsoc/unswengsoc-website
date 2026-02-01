@@ -1,645 +1,487 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import gsap from 'gsap';
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 
-export default function BlueprintBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+gsap.registerPlugin(DrawSVGPlugin);
 
+interface BlueprintBackgroundProps {
+  animateIn?: boolean;
+  onDrawComplete?: () => void;
+}
+
+// Seeded random for consistent scattered markers
+function createSeededRandom(initialSeed: number) {
+  let seed = initialSeed;
+  return () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+}
+
+// Generate hexagon points string for SVG polygon
+function hexagonPoints(cx: number, cy: number, size: number): string {
+  const points: string[] = [];
+  for (let i = 0; i < 6; i++) {
+    const angle = (Math.PI / 3) * i - Math.PI / 2;
+    points.push(`${cx + size * Math.cos(angle)},${cy + size * Math.sin(angle)}`);
+  }
+  return points.join(' ');
+}
+
+export default function BlueprintBackground({ animateIn = false, onDrawComplete }: BlueprintBackgroundProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const annotationsRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  // Track dimensions
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let seed = 12345;
-    const seededRandom = () => {
-      seed = (seed * 9301 + 49297) % 233280;
-      return seed / 233280;
+    const update = () => {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
     };
-
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      ctx.scale(dpr, dpr);
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-      seed = 12345;
-      draw();
-    };
-
-    const draw = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const centerX = width / 2;
-      const centerY = height / 2;
-
-      const strokeColor = 'white';
-      const strokeOpacity = 0.3;
-
-      ctx.clearRect(0, 0, width, height);
-      ctx.strokeStyle = strokeColor;
-      ctx.fillStyle = strokeColor;
-      ctx.lineWidth = 0.5;
-
-      // Draw grid
-      ctx.globalAlpha = strokeOpacity * 0.3;
-      const gridSize = 40;
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // Draw fine grid
-      ctx.globalAlpha = strokeOpacity * 0.15;
-      const fineGridSize = 10;
-      for (let x = 0; x < width; x += fineGridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < height; y += fineGridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // Outer border
-      ctx.globalAlpha = strokeOpacity * 0.6;
-      ctx.lineWidth = 2;
-      const bp = 25;
-      ctx.strokeRect(bp, bp, width - bp * 2, height - bp * 2);
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(bp + 6, bp + 6, width - bp * 2 - 12, height - bp * 2 - 12);
-
-      ctx.globalAlpha = strokeOpacity;
-      ctx.lineWidth = 1;
-
-      // Draw concentric hexagons
-      const hexagonSizes = [50, 90, 130, 170, 210];
-      hexagonSizes.forEach((size, index) => {
-        ctx.globalAlpha = strokeOpacity * (1 - index * 0.15);
-        drawHexagon(ctx, centerX, centerY, size);
-      });
-
-      // Draw outer square frame
-      ctx.globalAlpha = strokeOpacity;
-      const frameSize = 280;
-      ctx.strokeRect(centerX - frameSize, centerY - frameSize, frameSize * 2, frameSize * 2);
-
-      // Draw diagonal lines from corners
-      ctx.beginPath();
-      ctx.moveTo(centerX - frameSize, centerY - frameSize);
-      ctx.lineTo(centerX - 170, centerY - 170);
-      ctx.moveTo(centerX + frameSize, centerY - frameSize);
-      ctx.lineTo(centerX + 170, centerY - 170);
-      ctx.moveTo(centerX - frameSize, centerY + frameSize);
-      ctx.lineTo(centerX - 170, centerY + 170);
-      ctx.moveTo(centerX + frameSize, centerY + frameSize);
-      ctx.lineTo(centerX + 170, centerY + 170);
-      ctx.stroke();
-
-      // Draw connection lines from hexagon
-      const directions = [
-        { x: 0, y: -1 },
-        { x: 0, y: 1 },
-        { x: -1, y: 0 },
-        { x: 1, y: 0 },
-        { x: -0.7, y: -0.7 },
-        { x: 0.7, y: -0.7 },
-        { x: -0.7, y: 0.7 },
-        { x: 0.7, y: 0.7 },
-      ];
-
-      directions.forEach((dir) => {
-        const startDist = 210;
-        const endDist = Math.min(width, height) * 0.45;
-        ctx.beginPath();
-        ctx.moveTo(centerX + dir.x * startDist, centerY + dir.y * startDist);
-        ctx.lineTo(centerX + dir.x * endDist, centerY + dir.y * endDist);
-        ctx.stroke();
-      });
-
-      // Draw corner technical elements
-      drawTechnicalElement(ctx, 80, 80, strokeOpacity);
-      drawTechnicalElement(ctx, width - 80, 80, strokeOpacity);
-      drawTechnicalElement(ctx, 80, height - 80, strokeOpacity);
-      drawTechnicalElement(ctx, width - 80, height - 80, strokeOpacity);
-
-      // Draw side control panels
-      ctx.globalAlpha = strokeOpacity;
-      drawControlPanel(ctx, width - 100, centerY - 150, 60, 300);
-      drawControlPanel(ctx, 100, centerY - 100, 50, 200);
-
-      // Draw measurement markers
-      drawMeasurementLine(ctx, centerX - 300, height - 50, 600, true);
-      drawMeasurementLine(ctx, 50, centerY - 200, 400, false);
-
-      // === NEW: Title blocks, text annotations, specs ===
-
-      const leftPanelX = 50;
-      const rightPanelX = width - 50;
-
-      // TOP LEFT - Title block
-      ctx.globalAlpha = strokeOpacity * 0.8;
-      ctx.lineWidth = 1;
-      drawTitleBlock(ctx, leftPanelX, 50, 180, 120);
-      drawText(ctx, leftPanelX + 10, 70, 'SCHEMATIC', 12);
-      drawText(ctx, leftPanelX + 10, 88, 'REV. 2.4.1', 9);
-      drawText(ctx, leftPanelX + 10, 105, 'DWG NO.', 8);
-      drawText(ctx, leftPanelX + 60, 105, 'A-7742-01', 8);
-      drawText(ctx, leftPanelX + 10, 122, 'SCALE', 8);
-      drawText(ctx, leftPanelX + 60, 122, '1:100', 8);
-      drawText(ctx, leftPanelX + 10, 139, 'DATE', 8);
-      drawText(ctx, leftPanelX + 60, 139, '01.29.26', 8);
-
-      // TOP RIGHT - Title block
-      drawTitleBlock(ctx, rightPanelX - 180, 50, 180, 120);
-      drawText(ctx, rightPanelX - 170, 70, 'SYSTEM', 12);
-      drawText(ctx, rightPanelX - 170, 88, 'CORE MODULE', 9);
-      drawText(ctx, rightPanelX - 170, 105, 'SHEET', 8);
-      drawText(ctx, rightPanelX - 110, 105, '1 OF 12', 8);
-      drawText(ctx, rightPanelX - 170, 122, 'ZONE', 8);
-      drawText(ctx, rightPanelX - 110, 122, 'A-4', 8);
-      drawText(ctx, rightPanelX - 170, 139, 'APPROVED', 8);
-      drawText(ctx, rightPanelX - 110, 139, 'J.DOE', 8);
-
-      // LEFT SIDE - Component list
-      ctx.globalAlpha = strokeOpacity * 0.7;
-      const compListY = 200;
-      drawText(ctx, leftPanelX, compListY, 'COMPONENT LIST', 10);
-      ctx.beginPath();
-      ctx.moveTo(leftPanelX, compListY + 5);
-      ctx.lineTo(leftPanelX + 140, compListY + 5);
-      ctx.stroke();
-
-      const components = [
-        { id: 'C-01', name: 'CAPACITOR', val: '100uF' },
-        { id: 'R-02', name: 'RESISTOR', val: '10K' },
-        { id: 'D-03', name: 'DIODE', val: '1N4148' },
-        { id: 'U-04', name: 'IC CHIP', val: '74HC00' },
-        { id: 'L-05', name: 'INDUCTOR', val: '22mH' },
-        { id: 'Q-06', name: 'TRANSISTOR', val: '2N2222' },
-        { id: 'X-07', name: 'CRYSTAL', val: '16MHz' },
-        { id: 'J-08', name: 'CONNECTOR', val: 'DB-9' },
-      ];
-
-      components.forEach((comp, i) => {
-        const y = compListY + 25 + i * 22;
-        drawText(ctx, leftPanelX, y, comp.id, 8);
-        drawText(ctx, leftPanelX + 35, y, comp.name, 7);
-        drawText(ctx, leftPanelX + 100, y, comp.val, 7);
-        if (i % 3 === 0) drawCircle(ctx, leftPanelX + 130, y - 3, 4, false);
-        else if (i % 3 === 1) ctx.strokeRect(leftPanelX + 126, y - 6, 8, 6);
-        else drawTriangle(ctx, leftPanelX + 130, y - 3, 5);
-      });
-
-      // LEFT SIDE - Dimension annotations
-      ctx.globalAlpha = strokeOpacity * 0.6;
-      const dimY = compListY + 220;
-      drawText(ctx, leftPanelX, dimY, 'DIMENSIONS (mm)', 10);
-      ctx.beginPath();
-      ctx.moveTo(leftPanelX, dimY + 5);
-      ctx.lineTo(leftPanelX + 130, dimY + 5);
-      ctx.stroke();
-
-      drawDimensionLine(ctx, leftPanelX, dimY + 25, 120, true, '245.00');
-      drawDimensionLine(ctx, leftPanelX, dimY + 55, 90, true, '182.50');
-      drawDimensionLine(ctx, leftPanelX, dimY + 85, 60, true, '96.75');
-      drawDimensionLine(ctx, leftPanelX + 140, dimY + 25, 150, false, '312.00');
-
-      // LEFT SIDE - Notes section
-      const notesY = dimY + 200;
-      drawText(ctx, leftPanelX, notesY, 'NOTES:', 10);
-      ctx.beginPath();
-      ctx.moveTo(leftPanelX, notesY + 5);
-      ctx.lineTo(leftPanelX + 80, notesY + 5);
-      ctx.stroke();
-
-      const notes = [
-        '1. ALL DIMS IN MM',
-        '2. TOLERANCE +/-0.5',
-        '3. FINISH: MATTE',
-        '4. MATERIAL: AL6061',
-        '5. BREAK EDGES',
-      ];
-      notes.forEach((note, i) => {
-        drawText(ctx, leftPanelX, notesY + 20 + i * 16, note, 7);
-      });
-
-      // RIGHT SIDE - Specifications
-      ctx.globalAlpha = strokeOpacity * 0.7;
-      const specY = 200;
-      drawText(ctx, rightPanelX - 150, specY, 'SPECIFICATIONS', 10);
-      ctx.beginPath();
-      ctx.moveTo(rightPanelX - 150, specY + 5);
-      ctx.lineTo(rightPanelX - 10, specY + 5);
-      ctx.stroke();
-
-      const specs = [
-        { label: 'VOLTAGE', value: '3.3V - 12V DC' },
-        { label: 'CURRENT', value: '500mA MAX' },
-        { label: 'POWER', value: '6W NOMINAL' },
-        { label: 'FREQ', value: '2.4 GHz' },
-        { label: 'TEMP', value: '-20 TO 85C' },
-        { label: 'HUMIDITY', value: '5-95% RH' },
-        { label: 'WEIGHT', value: '42.5g' },
-        { label: 'MTBF', value: '>50000 HRS' },
-      ];
-
-      specs.forEach((spec, i) => {
-        const y = specY + 25 + i * 22;
-        drawText(ctx, rightPanelX - 150, y, spec.label, 7);
-        drawText(ctx, rightPanelX - 80, y, spec.value, 8);
-      });
-
-      // RIGHT SIDE - Reference designators
-      const refY = specY + 220;
-      drawText(ctx, rightPanelX - 150, refY, 'REF DESIGNATORS', 10);
-      ctx.beginPath();
-      ctx.moveTo(rightPanelX - 150, refY + 5);
-      ctx.lineTo(rightPanelX - 10, refY + 5);
-      ctx.stroke();
-
-      const refs = ['A1', 'B2', 'C3', 'D4', 'E5', 'F6'];
-      refs.forEach((ref, i) => {
-        const rx = rightPanelX - 150 + (i % 3) * 50;
-        const ry = refY + 25 + Math.floor(i / 3) * 30;
-        drawCircle(ctx, rx + 10, ry, 10, false);
-        drawText(ctx, rx + 5, ry + 4, ref, 8);
-      });
-
-      // RIGHT SIDE - Coordinate system
-      const coordY = refY + 100;
-      drawText(ctx, rightPanelX - 150, coordY, 'COORDINATES', 10);
-      ctx.beginPath();
-      ctx.moveTo(rightPanelX - 150, coordY + 5);
-      ctx.lineTo(rightPanelX - 50, coordY + 5);
-      ctx.stroke();
-
-      ctx.globalAlpha = strokeOpacity * 0.8;
-      const arrowX = rightPanelX - 100;
-      const arrowY = coordY + 50;
-      // X axis
-      ctx.beginPath();
-      ctx.moveTo(arrowX, arrowY);
-      ctx.lineTo(arrowX + 50, arrowY);
-      ctx.moveTo(arrowX + 45, arrowY - 4);
-      ctx.lineTo(arrowX + 50, arrowY);
-      ctx.lineTo(arrowX + 45, arrowY + 4);
-      ctx.stroke();
-      drawText(ctx, arrowX + 55, arrowY + 3, 'X', 8);
-      // Y axis
-      ctx.beginPath();
-      ctx.moveTo(arrowX, arrowY);
-      ctx.lineTo(arrowX, arrowY - 50);
-      ctx.moveTo(arrowX - 4, arrowY - 45);
-      ctx.lineTo(arrowX, arrowY - 50);
-      ctx.lineTo(arrowX + 4, arrowY - 45);
-      ctx.stroke();
-      drawText(ctx, arrowX - 3, arrowY - 55, 'Y', 8);
-      drawText(ctx, arrowX - 5, arrowY + 15, 'ORIGIN: 0,0,0', 7);
-
-      // BOTTOM LEFT - Revision table
-      ctx.globalAlpha = strokeOpacity * 0.7;
-      const revTableY = height - 120;
-      drawText(ctx, leftPanelX, revTableY, 'REVISION HISTORY', 10);
-      ctx.beginPath();
-      ctx.moveTo(leftPanelX, revTableY + 5);
-      ctx.lineTo(leftPanelX + 200, revTableY + 5);
-      ctx.stroke();
-
-      const revisions = [
-        { rev: 'A', date: '01.15.26', desc: 'INITIAL RELEASE' },
-        { rev: 'B', date: '01.22.26', desc: 'UPDATED DIMS' },
-        { rev: 'C', date: '01.29.26', desc: 'ADDED NOTES' },
-      ];
-
-      drawText(ctx, leftPanelX, revTableY + 20, 'REV', 7);
-      drawText(ctx, leftPanelX + 30, revTableY + 20, 'DATE', 7);
-      drawText(ctx, leftPanelX + 90, revTableY + 20, 'DESCRIPTION', 7);
-      ctx.beginPath();
-      ctx.moveTo(leftPanelX, revTableY + 25);
-      ctx.lineTo(leftPanelX + 200, revTableY + 25);
-      ctx.stroke();
-
-      revisions.forEach((rev, i) => {
-        const y = revTableY + 40 + i * 18;
-        drawText(ctx, leftPanelX, y, rev.rev, 7);
-        drawText(ctx, leftPanelX + 30, y, rev.date, 7);
-        drawText(ctx, leftPanelX + 90, y, rev.desc, 7);
-      });
-
-      // BOTTOM RIGHT - Approval block
-      const approvalX = rightPanelX - 200;
-      drawText(ctx, approvalX, revTableY, 'APPROVALS', 10);
-      ctx.beginPath();
-      ctx.moveTo(approvalX, revTableY + 5);
-      ctx.lineTo(approvalX + 180, revTableY + 5);
-      ctx.stroke();
-
-      drawText(ctx, approvalX, revTableY + 25, 'DRAWN', 7);
-      drawText(ctx, approvalX + 60, revTableY + 25, 'J. SMITH', 7);
-      drawText(ctx, approvalX + 130, revTableY + 25, '01.10.26', 7);
-
-      drawText(ctx, approvalX, revTableY + 43, 'CHECKED', 7);
-      drawText(ctx, approvalX + 60, revTableY + 43, 'M. JONES', 7);
-      drawText(ctx, approvalX + 130, revTableY + 43, '01.15.26', 7);
-
-      drawText(ctx, approvalX, revTableY + 61, 'APPROVED', 7);
-      drawText(ctx, approvalX + 60, revTableY + 61, 'R. DAVIS', 7);
-      drawText(ctx, approvalX + 130, revTableY + 61, '01.20.26', 7);
-
-      // Zone markers along edges
-      ctx.globalAlpha = strokeOpacity * 0.5;
-      const zones = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-      const zoneSpacing = (width - 100) / zones.length;
-      zones.forEach((zone, i) => {
-        const zx = 50 + zoneSpacing * i + zoneSpacing / 2;
-        drawText(ctx, zx - 4, 40, zone, 10);
-        drawText(ctx, zx - 4, height - 32, zone, 10);
-      });
-
-      const numZones = ['1', '2', '3', '4', '5', '6'];
-      const numSpacing = (height - 100) / numZones.length;
-      numZones.forEach((num, i) => {
-        const zy = 50 + numSpacing * i + numSpacing / 2;
-        drawText(ctx, 32, zy + 4, num, 10);
-        drawText(ctx, width - 40, zy + 4, num, 10);
-      });
-
-      // Technical callouts pointing to center
-      ctx.globalAlpha = strokeOpacity * 0.6;
-      drawCallout(ctx, centerX - 180, centerY - 100, centerX - 250, centerY - 180, 'DETAIL A', 'SEE DWG A-7742-02');
-      drawCallout(ctx, centerX + 180, centerY - 100, centerX + 250, centerY - 180, 'SECTION B-B', 'SCALE 2:1');
-      drawCallout(ctx, centerX + 150, centerY + 120, centerX + 280, centerY + 200, 'NOTE 3', 'TYP. 6 PLACES');
-      drawCallout(ctx, centerX - 150, centerY + 100, centerX - 280, centerY + 180, 'REF C1', '100uF 16V');
-
-      // Scattered technical markers
-      ctx.globalAlpha = strokeOpacity * 0.4;
-      for (let i = 0; i < 30; i++) {
-        const mx = seededRandom() * (width - 400) + 200;
-        const my = seededRandom() * (height - 300) + 150;
-        const dist = Math.sqrt((mx - centerX) ** 2 + (my - centerY) ** 2);
-        if (dist > 280 && dist < 400) {
-          const marker = Math.floor(seededRandom() * 20) + 1;
-          drawCircle(ctx, mx, my, 8, false);
-          drawText(ctx, mx - 4, my + 3, marker.toString(), 7);
-        }
-      }
-
-      // Dashed connection lines from side panels to center
-      ctx.globalAlpha = strokeOpacity * 0.2;
-      ctx.setLineDash([3, 6]);
-      ctx.beginPath();
-      ctx.moveTo(leftPanelX + 150, compListY + 100);
-      ctx.lineTo(centerX - frameSize, centerY);
-      ctx.moveTo(rightPanelX - 150, specY + 100);
-      ctx.lineTo(centerX + frameSize, centerY);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    };
-
-    const drawHexagon = (
-      ctx: CanvasRenderingContext2D,
-      cx: number,
-      cy: number,
-      size: number,
-    ) => {
-      ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 3) * i - Math.PI / 2;
-        const hx = cx + size * Math.cos(angle);
-        const hy = cy + size * Math.sin(angle);
-        if (i === 0) ctx.moveTo(hx, hy);
-        else ctx.lineTo(hx, hy);
-      }
-      ctx.closePath();
-      ctx.stroke();
-    };
-
-    const drawCircle = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      radius: number,
-      filled: boolean,
-    ) => {
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      if (filled) ctx.fill();
-      else ctx.stroke();
-    };
-
-    const drawTriangle = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      size: number,
-    ) => {
-      ctx.beginPath();
-      ctx.moveTo(x, y - size);
-      ctx.lineTo(x - size, y + size);
-      ctx.lineTo(x + size, y + size);
-      ctx.closePath();
-      ctx.stroke();
-    };
-
-    const drawText = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      text: string,
-      size: number,
-    ) => {
-      ctx.font = `${size}px "Courier New", monospace`;
-      ctx.fillText(text, x, y);
-    };
-
-    const drawTechnicalElement = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      opacity: number,
-    ) => {
-      ctx.globalAlpha = opacity;
-      drawCircle(ctx, x, y, 30, false);
-      drawCircle(ctx, x, y, 20, false);
-      drawCircle(ctx, x, y, 5, true);
-
-      // Cross lines
-      ctx.beginPath();
-      ctx.moveTo(x - 35, y);
-      ctx.lineTo(x - 45, y);
-      ctx.moveTo(x + 35, y);
-      ctx.lineTo(x + 45, y);
-      ctx.moveTo(x, y - 35);
-      ctx.lineTo(x, y - 45);
-      ctx.moveTo(x, y + 35);
-      ctx.lineTo(x, y + 45);
-      ctx.stroke();
-    };
-
-    const drawControlPanel = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      w: number,
-      h: number,
-    ) => {
-      ctx.strokeRect(x - w / 2, y, w, h);
-
-      // Inner elements
-      const padding = 10;
-      const innerWidth = w - padding * 2;
-
-      // Small circles
-      for (let i = 0; i < 3; i++) {
-        drawCircle(ctx, x, y + 30 + i * 40, 8, false);
-        drawCircle(ctx, x, y + 30 + i * 40, 3, true);
-      }
-
-      // Small rectangles
-      ctx.strokeRect(x - innerWidth / 2, y + h - 80, innerWidth, 20);
-      ctx.strokeRect(x - innerWidth / 2, y + h - 50, innerWidth, 30);
-    };
-
-    const drawMeasurementLine = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      length: number,
-      horizontal: boolean,
-    ) => {
-      ctx.beginPath();
-      if (horizontal) {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + length, y);
-        ctx.moveTo(x, y - 5);
-        ctx.lineTo(x, y + 5);
-        ctx.moveTo(x + length, y - 5);
-        ctx.lineTo(x + length, y + 5);
-        for (let i = 0; i <= length; i += 20) {
-          const tickHeight = i % 100 === 0 ? 8 : 4;
-          ctx.moveTo(x + i, y - tickHeight);
-          ctx.lineTo(x + i, y + tickHeight);
-        }
-      } else {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y + length);
-        ctx.moveTo(x - 5, y);
-        ctx.lineTo(x + 5, y);
-        ctx.moveTo(x - 5, y + length);
-        ctx.lineTo(x + 5, y + length);
-        for (let i = 0; i <= length; i += 20) {
-          const tickWidth = i % 100 === 0 ? 8 : 4;
-          ctx.moveTo(x - tickWidth, y + i);
-          ctx.lineTo(x + tickWidth, y + i);
-        }
-      }
-      ctx.stroke();
-    };
-
-    const drawTitleBlock = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      w: number,
-      h: number,
-    ) => {
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(x, y, w, h);
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(x + 3, y + 3, w - 6, h - 6);
-      ctx.beginPath();
-      ctx.moveTo(x, y + 30);
-      ctx.lineTo(x + w, y + 30);
-      ctx.moveTo(x, y + 50);
-      ctx.lineTo(x + w, y + 50);
-      ctx.moveTo(x, y + 70);
-      ctx.lineTo(x + w, y + 70);
-      ctx.moveTo(x, y + 90);
-      ctx.lineTo(x + w, y + 90);
-      ctx.moveTo(x + 50, y + 50);
-      ctx.lineTo(x + 50, y + h);
-      ctx.stroke();
-    };
-
-    const drawDimensionLine = (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      y: number,
-      length: number,
-      horizontal: boolean,
-      value: string,
-    ) => {
-      ctx.lineWidth = 0.5;
-      ctx.beginPath();
-      if (horizontal) {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + length, y);
-        ctx.moveTo(x, y - 4);
-        ctx.lineTo(x + 6, y);
-        ctx.lineTo(x, y + 4);
-        ctx.moveTo(x + length, y - 4);
-        ctx.lineTo(x + length - 6, y);
-        ctx.lineTo(x + length, y + 4);
-        ctx.stroke();
-        drawText(ctx, x + length / 2 - 15, y - 6, value, 7);
-      } else {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y + length);
-        ctx.moveTo(x - 4, y);
-        ctx.lineTo(x, y + 6);
-        ctx.lineTo(x + 4, y);
-        ctx.moveTo(x - 4, y + length);
-        ctx.lineTo(x, y + length - 6);
-        ctx.lineTo(x + 4, y + length);
-        ctx.stroke();
-        drawText(ctx, x + 6, y + length / 2, value, 7);
-      }
-    };
-
-    const drawCallout = (
-      ctx: CanvasRenderingContext2D,
-      startX: number,
-      startY: number,
-      endX: number,
-      endY: number,
-      title: string,
-      desc: string,
-    ) => {
-      ctx.lineWidth = 0.5;
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(endX, endY);
-      ctx.stroke();
-      drawCircle(ctx, startX, startY, 3, true);
-      drawText(ctx, endX + 5, endY, title, 8);
-      drawText(ctx, endX + 5, endY + 12, desc, 7);
-    };
-
-    resize();
-    window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
+  const { width, height } = dimensions;
+  const cx = width / 2;
+  const cy = height / 2;
+  const bp = 25;
+  const frameSize = 280;
+  const hexSizes = [50, 90, 130, 170, 210];
+  const strokeColor = 'rgba(255,255,255,0.3)';
+  const strokeColorDim = 'rgba(255,255,255,0.18)';
+  const strokeColorBright = 'rgba(255,255,255,0.24)';
+
+  // Connection line directions
+  const directions = [
+    { x: 0, y: -1 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 1, y: 0 },
+    { x: -0.7, y: -0.7 }, { x: 0.7, y: -0.7 }, { x: -0.7, y: 0.7 }, { x: 0.7, y: 0.7 },
+  ];
+  const endDist = Math.min(width, height) * 0.45;
+
+  // Corner positions
+  const corners = [
+    { x: 80, y: 80 }, { x: width - 80, y: 80 },
+    { x: 80, y: height - 80 }, { x: width - 80, y: height - 80 },
+  ];
+
+  // Callouts
+  const callouts = [
+    { sx: cx - 180, sy: cy - 100, ex: cx - 250, ey: cy - 180, title: 'DETAIL A', desc: 'SEE DWG A-7742-02' },
+    { sx: cx + 180, sy: cy - 100, ex: cx + 250, ey: cy - 180, title: 'SECTION B-B', desc: 'SCALE 2:1' },
+    { sx: cx + 150, sy: cy + 120, ex: cx + 280, ey: cy + 200, title: 'NOTE 3', desc: 'TYP. 6 PLACES' },
+    { sx: cx - 150, sy: cy + 100, ex: cx - 280, ey: cy + 180, title: 'REF C1', desc: '100uF 16V' },
+  ];
+
+  // Scattered markers (seeded random)
+  const markers = useMemo(() => {
+    if (width === 0) return [];
+    const seededRandom = createSeededRandom(12345);
+    const result: { x: number; y: number; num: number }[] = [];
+    for (let i = 0; i < 30; i++) {
+      const mx = seededRandom() * (width - 400) + 200;
+      const my = seededRandom() * (height - 300) + 150;
+      const dist = Math.sqrt((mx - cx) ** 2 + (my - cy) ** 2);
+      if (dist > 280 && dist < 400) {
+        result.push({ x: mx, y: my, num: Math.floor(seededRandom() * 20) + 1 });
+      } else {
+        seededRandom(); // consume to keep sequence consistent
+      }
+    }
+    return result;
+  }, [width, height, cx, cy]);
+
+  // Text annotation data
+  const leftPanelX = 50;
+  const rightPanelX = width - 50;
+  const compListY = 200;
+  const dimY = compListY + 220;
+  const notesY = dimY + 200;
+  const specY = 200;
+  const refY = specY + 220;
+  const coordY = refY + 100;
+  const revTableY = height - 120;
+  const approvalX = rightPanelX - 200;
+
+  const components = [
+    { id: 'C-01', name: 'CAPACITOR', val: '100uF' },
+    { id: 'R-02', name: 'RESISTOR', val: '10K' },
+    { id: 'D-03', name: 'DIODE', val: '1N4148' },
+    { id: 'U-04', name: 'IC CHIP', val: '74HC00' },
+    { id: 'L-05', name: 'INDUCTOR', val: '22mH' },
+    { id: 'Q-06', name: 'TRANSISTOR', val: '2N2222' },
+    { id: 'X-07', name: 'CRYSTAL', val: '16MHz' },
+    { id: 'J-08', name: 'CONNECTOR', val: 'DB-9' },
+  ];
+
+  const specs = [
+    { label: 'VOLTAGE', value: '3.3V - 12V DC' },
+    { label: 'CURRENT', value: '500mA MAX' },
+    { label: 'POWER', value: '6W NOMINAL' },
+    { label: 'FREQ', value: '2.4 GHz' },
+    { label: 'TEMP', value: '-20 TO 85C' },
+    { label: 'HUMIDITY', value: '5-95% RH' },
+    { label: 'WEIGHT', value: '42.5g' },
+    { label: 'MTBF', value: '>50000 HRS' },
+  ];
+
+  const notes = ['1. ALL DIMS IN MM', '2. TOLERANCE +/-0.5', '3. FINISH: MATTE', '4. MATERIAL: AL6061', '5. BREAK EDGES'];
+
+  const revisions = [
+    { rev: 'A', date: '01.15.26', desc: 'INITIAL RELEASE' },
+    { rev: 'B', date: '01.22.26', desc: 'UPDATED DIMS' },
+    { rev: 'C', date: '01.29.26', desc: 'ADDED NOTES' },
+  ];
+
+  const zones = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  const zoneSpacing = width > 0 ? (width - 100) / zones.length : 0;
+  const numZones = ['1', '2', '3', '4', '5', '6'];
+  const numSpacing = height > 0 ? (height - 100) / numZones.length : 0;
+
+  const refs = ['A1', 'B2', 'C3', 'D4', 'E5', 'F6'];
+
+  // GSAP DrawSVG animation
+  useEffect(() => {
+    if (width === 0 || !svgRef.current) return;
+
+    // Kill previous timeline on re-render
+    if (timelineRef.current) {
+      timelineRef.current.kill();
+    }
+
+    const svg = svgRef.current;
+
+    if (!animateIn) {
+      // Show everything immediately
+      if (gridRef.current) gridRef.current.style.opacity = '1';
+      if (annotationsRef.current) annotationsRef.current.style.opacity = '1';
+      gsap.set(svg.querySelectorAll('.svg-draw'), { drawSVG: '100%' });
+      return;
+    }
+
+    // Start hidden
+    if (gridRef.current) gridRef.current.style.opacity = '0';
+    if (annotationsRef.current) annotationsRef.current.style.opacity = '0';
+    gsap.set(svg.querySelectorAll('.svg-draw'), { drawSVG: '0%' });
+
+    const tl = gsap.timeline({
+      onComplete: () => onDrawComplete?.(),
+    });
+    timelineRef.current = tl;
+
+    // Phase 1: Grid background fades in
+    tl.to(gridRef.current, { opacity: 1, duration: 0.5 }, 0);
+
+    // Phase 2: Borders draw in
+    tl.fromTo(svg.querySelectorAll('.svg-border'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.8, stagger: 0.1, ease: 'power2.out' }, 0.3);
+
+    // Phase 3: Hexagons draw in (smallest to largest)
+    tl.fromTo(svg.querySelectorAll('.svg-hexagon'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.6, stagger: 0.08, ease: 'power2.out' }, 0.5);
+
+    // Phase 4: Square frame
+    tl.fromTo(svg.querySelectorAll('.svg-frame'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.6, ease: 'power2.out' }, 0.7);
+
+    // Phase 5: Diagonal lines
+    tl.fromTo(svg.querySelectorAll('.svg-diagonal'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.4, stagger: 0.05, ease: 'power2.out' }, 0.9);
+
+    // Phase 6: Connection lines
+    tl.fromTo(svg.querySelectorAll('.svg-connection'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.5, stagger: 0.04, ease: 'power2.out' }, 1.0);
+
+    // Phase 7: Corner elements
+    tl.fromTo(svg.querySelectorAll('.svg-corner'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.4, stagger: 0.03, ease: 'power2.out' }, 1.3);
+
+    // Phase 8: Control panels + measurement lines
+    tl.fromTo(svg.querySelectorAll('.svg-panel'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.4, stagger: 0.05, ease: 'power2.out' }, 1.4);
+
+    // Phase 9: Callout lines + markers
+    tl.fromTo(svg.querySelectorAll('.svg-callout'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.3, stagger: 0.04, ease: 'power2.out' }, 1.5);
+
+    // Phase 10: Dashed lines
+    tl.fromTo(svg.querySelectorAll('.svg-dashed'),
+      { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.5, stagger: 0.1, ease: 'power2.out' }, 1.5);
+
+    // Phase 11: Text annotations fade in
+    tl.to(annotationsRef.current, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 1.6);
+
+    return () => {
+      tl.kill();
+    };
+  }, [width, height, animateIn, onDrawComplete]);
+
+  if (width === 0) return null;
+
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0 }}
-    />
+    <div ref={containerRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+      {/* Grid background - CSS */}
+      <div ref={gridRef} className="blueprint-bg" style={{ opacity: animateIn ? 0 : 1 }} />
+
+      {/* SVG structural lines */}
+      <svg
+        ref={svgRef}
+        width={width}
+        height={height}
+        className="fixed inset-0"
+        style={{ overflow: 'visible' }}
+      >
+        {/* Outer borders */}
+        <rect className="svg-draw svg-border" x={bp} y={bp} width={width - bp * 2} height={height - bp * 2}
+          fill="none" stroke={strokeColor} strokeWidth={2} opacity={0.6} />
+        <rect className="svg-draw svg-border" x={bp + 6} y={bp + 6} width={width - bp * 2 - 12} height={height - bp * 2 - 12}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} opacity={0.6} />
+
+        {/* Hexagons (smallest to largest) */}
+        {hexSizes.map((size, i) => (
+          <polygon key={`hex-${i}`} className="svg-draw svg-hexagon"
+            points={hexagonPoints(cx, cy, size)}
+            fill="none" stroke={strokeColor} strokeWidth={1} opacity={1 - i * 0.15} />
+        ))}
+
+        {/* Square frame */}
+        <rect className="svg-draw svg-frame"
+          x={cx - frameSize} y={cy - frameSize} width={frameSize * 2} height={frameSize * 2}
+          fill="none" stroke={strokeColor} strokeWidth={1} />
+
+        {/* Diagonal lines from frame corners to hexagon corners */}
+        <line className="svg-draw svg-diagonal" x1={cx - frameSize} y1={cy - frameSize} x2={cx - 170} y2={cy - 170} stroke={strokeColor} strokeWidth={1} />
+        <line className="svg-draw svg-diagonal" x1={cx + frameSize} y1={cy - frameSize} x2={cx + 170} y2={cy - 170} stroke={strokeColor} strokeWidth={1} />
+        <line className="svg-draw svg-diagonal" x1={cx - frameSize} y1={cy + frameSize} x2={cx - 170} y2={cy + 170} stroke={strokeColor} strokeWidth={1} />
+        <line className="svg-draw svg-diagonal" x1={cx + frameSize} y1={cy + frameSize} x2={cx + 170} y2={cy + 170} stroke={strokeColor} strokeWidth={1} />
+
+        {/* Connection lines from hexagon outward */}
+        {directions.map((dir, i) => (
+          <line key={`conn-${i}`} className="svg-draw svg-connection"
+            x1={cx + dir.x * 210} y1={cy + dir.y * 210}
+            x2={cx + dir.x * endDist} y2={cy + dir.y * endDist}
+            stroke={strokeColor} strokeWidth={1} />
+        ))}
+
+        {/* Corner technical elements */}
+        {corners.map((c, ci) => (
+          <g key={`corner-${ci}`}>
+            <circle className="svg-draw svg-corner" cx={c.x} cy={c.y} r={30} fill="none" stroke={strokeColor} strokeWidth={0.5} />
+            <circle className="svg-draw svg-corner" cx={c.x} cy={c.y} r={20} fill="none" stroke={strokeColor} strokeWidth={0.5} />
+            <circle className="svg-draw svg-corner" cx={c.x} cy={c.y} r={5} fill={strokeColor} stroke="none" />
+            <line className="svg-draw svg-corner" x1={c.x - 35} y1={c.y} x2={c.x - 45} y2={c.y} stroke={strokeColor} strokeWidth={0.5} />
+            <line className="svg-draw svg-corner" x1={c.x + 35} y1={c.y} x2={c.x + 45} y2={c.y} stroke={strokeColor} strokeWidth={0.5} />
+            <line className="svg-draw svg-corner" x1={c.x} y1={c.y - 35} x2={c.x} y2={c.y - 45} stroke={strokeColor} strokeWidth={0.5} />
+            <line className="svg-draw svg-corner" x1={c.x} y1={c.y + 35} x2={c.x} y2={c.y + 45} stroke={strokeColor} strokeWidth={0.5} />
+          </g>
+        ))}
+
+        {/* Control panel - right side */}
+        <rect className="svg-draw svg-panel" x={width - 130} y={cy - 150} width={60} height={300}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} />
+        {[0, 1, 2].map(i => (
+          <g key={`rp-circle-${i}`}>
+            <circle className="svg-draw svg-panel" cx={width - 100} cy={cy - 150 + 30 + i * 40} r={8} fill="none" stroke={strokeColor} strokeWidth={0.5} />
+            <circle cx={width - 100} cy={cy - 150 + 30 + i * 40} r={3} fill={strokeColor} stroke="none" />
+          </g>
+        ))}
+        <rect className="svg-draw svg-panel" x={width - 120} y={cy + 70} width={40} height={20}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} />
+        <rect className="svg-draw svg-panel" x={width - 120} y={cy + 100} width={40} height={30}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} />
+
+        {/* Control panel - left side */}
+        <rect className="svg-draw svg-panel" x={75} y={cy - 100} width={50} height={200}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} />
+        {[0, 1, 2].map(i => (
+          <g key={`lp-circle-${i}`}>
+            <circle className="svg-draw svg-panel" cx={100} cy={cy - 100 + 30 + i * 40} r={8} fill="none" stroke={strokeColor} strokeWidth={0.5} />
+            <circle cx={100} cy={cy - 100 + 30 + i * 40} r={3} fill={strokeColor} stroke="none" />
+          </g>
+        ))}
+        <rect className="svg-draw svg-panel" x={85} y={cy + 20} width={30} height={20}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} />
+        <rect className="svg-draw svg-panel" x={85} y={cy + 50} width={30} height={30}
+          fill="none" stroke={strokeColor} strokeWidth={0.5} />
+
+        {/* Measurement line - horizontal */}
+        <line className="svg-draw svg-panel" x1={cx - 300} y1={height - 50} x2={cx + 300} y2={height - 50} stroke={strokeColor} strokeWidth={0.5} />
+        <line className="svg-draw svg-panel" x1={cx - 300} y1={height - 55} x2={cx - 300} y2={height - 45} stroke={strokeColor} strokeWidth={0.5} />
+        <line className="svg-draw svg-panel" x1={cx + 300} y1={height - 55} x2={cx + 300} y2={height - 45} stroke={strokeColor} strokeWidth={0.5} />
+
+        {/* Measurement line - vertical */}
+        <line className="svg-draw svg-panel" x1={50} y1={cy - 200} x2={50} y2={cy + 200} stroke={strokeColor} strokeWidth={0.5} />
+        <line className="svg-draw svg-panel" x1={45} y1={cy - 200} x2={55} y2={cy - 200} stroke={strokeColor} strokeWidth={0.5} />
+        <line className="svg-draw svg-panel" x1={45} y1={cy + 200} x2={55} y2={cy + 200} stroke={strokeColor} strokeWidth={0.5} />
+
+        {/* Callout leader lines */}
+        {callouts.map((c, i) => (
+          <g key={`callout-${i}`}>
+            <line className="svg-draw svg-callout" x1={c.sx} y1={c.sy} x2={c.ex} y2={c.ey} stroke={strokeColor} strokeWidth={0.5} />
+            <circle cx={c.sx} cy={c.sy} r={3} fill={strokeColor} stroke="none" />
+          </g>
+        ))}
+
+        {/* Scattered marker circles */}
+        {markers.map((m, i) => (
+          <circle key={`marker-${i}`} className="svg-draw svg-callout"
+            cx={m.x} cy={m.y} r={8} fill="none" stroke={strokeColorDim} strokeWidth={0.5} />
+        ))}
+
+        {/* Dashed connection lines */}
+        <line className="svg-draw svg-dashed"
+          x1={leftPanelX + 150} y1={compListY + 100} x2={cx - 280} y2={cy}
+          stroke={strokeColorDim} strokeWidth={0.5} strokeDasharray="3 6" />
+        <line className="svg-draw svg-dashed"
+          x1={rightPanelX - 150} y1={specY + 100} x2={cx + 280} y2={cy}
+          stroke={strokeColorDim} strokeWidth={0.5} strokeDasharray="3 6" />
+
+        {/* Title block outlines (SVG rects that draw in with annotations) */}
+        <rect className="svg-draw svg-callout" x={leftPanelX} y={50} width={180} height={120}
+          fill="none" stroke={strokeColorBright} strokeWidth={1.5} />
+        <rect className="svg-draw svg-callout" x={leftPanelX + 3} y={53} width={174} height={114}
+          fill="none" stroke={strokeColorBright} strokeWidth={0.5} />
+        <rect className="svg-draw svg-callout" x={rightPanelX - 180} y={50} width={180} height={120}
+          fill="none" stroke={strokeColorBright} strokeWidth={1.5} />
+        <rect className="svg-draw svg-callout" x={rightPanelX - 177} y={53} width={174} height={114}
+          fill="none" stroke={strokeColorBright} strokeWidth={0.5} />
+      </svg>
+
+      {/* Text annotations layer */}
+      <div ref={annotationsRef} className="fixed inset-0" style={{ opacity: animateIn ? 0 : 1 }}>
+        {/* Top-left title block */}
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 58, fontSize: 12, opacity: 0.8 }}>SCHEMATIC</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 76, fontSize: 9, opacity: 0.8 }}>REV. 2.4.1</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 93, fontSize: 8, opacity: 0.8 }}>DWG NO.</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 93, fontSize: 8, opacity: 0.8 }}>A-7742-01</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 110, fontSize: 8, opacity: 0.8 }}>SCALE</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 110, fontSize: 8, opacity: 0.8 }}>1:100</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 127, fontSize: 8, opacity: 0.8 }}>DATE</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 127, fontSize: 8, opacity: 0.8 }}>01.29.26</div>
+
+        {/* Top-right title block */}
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 58, fontSize: 12, opacity: 0.8 }}>SYSTEM</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 76, fontSize: 9, opacity: 0.8 }}>CORE MODULE</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 93, fontSize: 8, opacity: 0.8 }}>SHEET</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 93, fontSize: 8, opacity: 0.8 }}>1 OF 12</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 110, fontSize: 8, opacity: 0.8 }}>ZONE</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 110, fontSize: 8, opacity: 0.8 }}>A-4</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 127, fontSize: 8, opacity: 0.8 }}>APPROVED</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 127, fontSize: 8, opacity: 0.8 }}>J.DOE</div>
+
+        {/* Component list */}
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: compListY - 12, fontSize: 10, opacity: 0.7 }}>COMPONENT LIST</div>
+        {components.map((comp, i) => (
+          <div key={`comp-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: compListY + 13 + i * 22, fontSize: 7, opacity: 0.7 }}>
+            <span style={{ display: 'inline-block', width: 32 }}>{comp.id}</span>
+            <span style={{ display: 'inline-block', width: 62 }}>{comp.name}</span>
+            <span>{comp.val}</span>
+          </div>
+        ))}
+
+        {/* Dimensions */}
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: dimY - 12, fontSize: 10, opacity: 0.6 }}>DIMENSIONS (mm)</div>
+
+        {/* Notes */}
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: notesY - 12, fontSize: 10, opacity: 0.6 }}>NOTES:</div>
+        {notes.map((note, i) => (
+          <div key={`note-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: notesY + 8 + i * 16, fontSize: 7, opacity: 0.6 }}>{note}</div>
+        ))}
+
+        {/* Specifications */}
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: specY - 12, fontSize: 10, opacity: 0.7 }}>SPECIFICATIONS</div>
+        {specs.map((spec, i) => (
+          <div key={`spec-${i}`} className="blueprint-annotation" style={{ left: rightPanelX - 150, top: specY + 13 + i * 22, fontSize: 7, opacity: 0.7 }}>
+            <span style={{ display: 'inline-block', width: 70 }}>{spec.label}</span>
+            <span style={{ fontSize: 8 }}>{spec.value}</span>
+          </div>
+        ))}
+
+        {/* Reference designators */}
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: refY - 12, fontSize: 10, opacity: 0.7 }}>REF DESIGNATORS</div>
+        {refs.map((r, i) => (
+          <div key={`ref-${i}`} className="blueprint-annotation" style={{
+            left: rightPanelX - 150 + (i % 3) * 50 + 2,
+            top: refY + 13 + Math.floor(i / 3) * 30,
+            fontSize: 8, opacity: 0.7,
+          }}>{r}</div>
+        ))}
+
+        {/* Coordinates */}
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: coordY - 12, fontSize: 10, opacity: 0.7 }}>COORDINATES</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 + 55, top: coordY + 38 - 4, fontSize: 8, opacity: 0.8 }}>X</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 - 3, top: coordY + 50 - 55 - 8, fontSize: 8, opacity: 0.8 }}>Y</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 - 5, top: coordY + 50 + 5, fontSize: 7, opacity: 0.7 }}>ORIGIN: 0,0,0</div>
+
+        {/* Revision history */}
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY - 12, fontSize: 10, opacity: 0.7 }}>REVISION HISTORY</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY + 8, fontSize: 7, opacity: 0.7 }}>
+          <span style={{ display: 'inline-block', width: 28 }}>REV</span>
+          <span style={{ display: 'inline-block', width: 58 }}>DATE</span>
+          <span>DESCRIPTION</span>
+        </div>
+        {revisions.map((rev, i) => (
+          <div key={`rev-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY + 28 + i * 18, fontSize: 7, opacity: 0.7 }}>
+            <span style={{ display: 'inline-block', width: 28 }}>{rev.rev}</span>
+            <span style={{ display: 'inline-block', width: 58 }}>{rev.date}</span>
+            <span>{rev.desc}</span>
+          </div>
+        ))}
+
+        {/* Approvals */}
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY - 12, fontSize: 10, opacity: 0.7 }}>APPROVALS</div>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 13, fontSize: 7, opacity: 0.7 }}>
+          <span style={{ display: 'inline-block', width: 58 }}>DRAWN</span>
+          <span style={{ display: 'inline-block', width: 68 }}>J. SMITH</span>
+          <span>01.10.26</span>
+        </div>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 31, fontSize: 7, opacity: 0.7 }}>
+          <span style={{ display: 'inline-block', width: 58 }}>CHECKED</span>
+          <span style={{ display: 'inline-block', width: 68 }}>M. JONES</span>
+          <span>01.15.26</span>
+        </div>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 49, fontSize: 7, opacity: 0.7 }}>
+          <span style={{ display: 'inline-block', width: 58 }}>APPROVED</span>
+          <span style={{ display: 'inline-block', width: 68 }}>R. DAVIS</span>
+          <span>01.20.26</span>
+        </div>
+
+        {/* Zone markers - top/bottom */}
+        {zones.map((zone, i) => (
+          <div key={`zone-top-${i}`}>
+            <div className="blueprint-annotation" style={{ left: 50 + zoneSpacing * i + zoneSpacing / 2 - 4, top: 28, fontSize: 10, opacity: 0.5 }}>{zone}</div>
+            <div className="blueprint-annotation" style={{ left: 50 + zoneSpacing * i + zoneSpacing / 2 - 4, top: height - 44, fontSize: 10, opacity: 0.5 }}>{zone}</div>
+          </div>
+        ))}
+
+        {/* Zone markers - left/right */}
+        {numZones.map((num, i) => (
+          <div key={`zone-num-${i}`}>
+            <div className="blueprint-annotation" style={{ left: 28, top: 50 + numSpacing * i + numSpacing / 2 - 6, fontSize: 10, opacity: 0.5 }}>{num}</div>
+            <div className="blueprint-annotation" style={{ left: width - 44, top: 50 + numSpacing * i + numSpacing / 2 - 6, fontSize: 10, opacity: 0.5 }}>{num}</div>
+          </div>
+        ))}
+
+        {/* Callout text */}
+        {callouts.map((c, i) => (
+          <div key={`callout-text-${i}`}>
+            <div className="blueprint-annotation" style={{ left: c.ex + 5, top: c.ey - 12, fontSize: 8, opacity: 0.6 }}>{c.title}</div>
+            <div className="blueprint-annotation" style={{ left: c.ex + 5, top: c.ey, fontSize: 7, opacity: 0.6 }}>{c.desc}</div>
+          </div>
+        ))}
+
+        {/* Scattered marker numbers */}
+        {markers.map((m, i) => (
+          <div key={`marker-text-${i}`} className="blueprint-annotation"
+            style={{ left: m.x - 4, top: m.y - 5, fontSize: 7, opacity: 0.4 }}>{m.num}</div>
+        ))}
+      </div>
+    </div>
   );
 }
