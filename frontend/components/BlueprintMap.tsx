@@ -139,7 +139,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
             width: 'clamp(200px, 30vw, 400px)',
             height: 'clamp(200px, 30vw, 400px)',
           }}
-          labelPosition="bottom"
+          labelPosition="right"
           onClick={() => onSectionClick('about')}
           animationDelay={0.4}
           disableEntrance={disableEntrance}
