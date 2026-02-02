@@ -65,6 +65,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
       <BlueprintElement
         id="events"
         label="events"
+        description="Discover our networking events, workshops, and social activities"
         style={{
           position: 'absolute',
           left: '18%',
@@ -95,6 +96,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
       <BlueprintElement
         id="sponsors"
         label="sponsors"
+        description="Meet our industry partners and sponsorship opportunities"
         style={{
           position: 'absolute',
           left: '15%',
@@ -131,6 +133,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         <BlueprintElement
           id="about"
           label="about us"
+          description="Learn about our mission, team, and what we do for engineers"
           style={{
             position: 'relative',
             width: 'clamp(200px, 30vw, 400px)',
@@ -160,6 +163,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
       <BlueprintElement
         id="programs"
         label="programs"
+        description="Explore mentorship, career development, and student programs"
         style={{
           position: 'absolute',
           right: '18%',
@@ -190,6 +194,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
       <BlueprintElement
         id="jobs"
         label="jobs board"
+        description="Browse internships, graduate roles, and career opportunities"
         style={{
           position: 'absolute',
           right: '18%',

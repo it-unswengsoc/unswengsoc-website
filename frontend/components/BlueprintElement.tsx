@@ -1,11 +1,13 @@
 'use client';
 
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import gsap from 'gsap';
 
 interface BlueprintElementProps {
   id: string;
   label: string;
+  description?: string;
   children: ReactNode | ((isHovered: boolean) => ReactNode);
   style: React.CSSProperties;
   labelPosition: 'top' | 'bottom' | 'left' | 'right';
@@ -18,6 +20,7 @@ interface BlueprintElementProps {
 export default function BlueprintElement({
   id,
   label,
+  description,
   children,
   style,
   labelPosition,
@@ -28,80 +31,101 @@ export default function BlueprintElement({
 }: BlueprintElementProps) {
   const [isHovered, setIsHovered] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
+  const descRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
-  // Label positioning based on labelPosition prop
-  const getLabelStyles = (): React.CSSProperties => {
-    const base: React.CSSProperties = {
-      position: 'absolute',
-      whiteSpace: 'nowrap',
-      fontSize: 'clamp(0.8rem, 2vw, 1.4rem)',
-      letterSpacing: '2px',
-      textTransform: 'lowercase',
-      color: 'var(--text-color)',
-      transition: 'opacity 0.3s ease, transform 0.3s ease',
-      opacity: isHovered ? 1 : 0,
-      transform: isHovered ? 'translateY(0)' : 'translateY(5px)',
-    };
+  // GSAP hover animations
+  useEffect(() => {
+    if (!elementRef.current || !glowRef.current) return;
 
-    switch (labelPosition) {
-      case 'top':
-        return { ...base, top: 'clamp(-60px, -10vw, -80px)', left: '50%', transform: isHovered ? 'translateX(-50%)' : 'translateX(-50%) translateY(-5px)' };
-      case 'bottom':
-        return { ...base, bottom: 'clamp(-80px, -12vw, -120px)', left: '45%', transform: isHovered ? 'translateX(-50%)' : 'translateX(-50%) translateY(5px)' };
-      case 'left':
-        return { ...base, left: 'clamp(-150px, -20vw, -225px)', top: '50%', transform: isHovered ? 'translateY(-50%)' : 'translateY(-50%) translateX(-5px)' };
-      case 'right':
-        return { ...base, right: 'clamp(-120px, -18vw, -190px)', top: '60%', transform: isHovered ? 'translateY(-50%)' : 'translateY(-50%) translateX(5px)' };
-      default:
-        return base;
+    const tl = gsap.timeline({ paused: true });
+
+    // Animate label
+    if (labelRef.current) {
+      tl.to(labelRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        ease: 'power2.out',
+      }, 0);
     }
-  };
 
-  // Line connecting label to element
-  const getLineStyles = (): React.CSSProperties => {
-    const base: React.CSSProperties = {
-      position: 'absolute',
-      background: 'var(--blueprint-border)',
-      transition: 'transform 0.3s ease',
-      transformOrigin: labelPosition === 'left' || labelPosition === 'top' ? 'right center' : 'left center',
-      transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
-    };
-
-    switch (labelPosition) {
-      case 'top':
-        return { ...base, width: '1px', height: '20px', top: '-22px', left: '50%', transformOrigin: 'bottom center', transform: isHovered ? 'scaleY(1)' : 'scaleY(0)' };
-      case 'bottom':
-        return { ...base, width: '1px', height: '60px', bottom: '-75px', left: '45%', transformOrigin: 'top center', transform: isHovered ? 'scaleY(1)' : 'scaleY(0)' };
-      case 'left':
-        return { ...base, width: '40px', height: '1px', left: '-60px', top: '50%' };
-      case 'right':
-        return { ...base, width: '40px', height: '1px', right: '-55px', top: '60%' };
-      default:
-        return base;
+    // Animate description
+    if (descRef.current && description) {
+      tl.to(descRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        ease: 'power2.out',
+      }, 0.1);
     }
-  };
 
-  // Dot at connection point
-  const getDotStyles = (): React.CSSProperties => {
+    // Animate tooltip box
+    if (tooltipRef.current) {
+      tl.to(tooltipRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.4,
+        ease: 'back.out(1.7)',
+      }, 0);
+    }
+
+    // Pulse glow effect - set initial state
+    tl.fromTo(glowRef.current, {
+      opacity: 0,
+      scale: 0.9,
+    }, {
+      opacity: 0.6,
+      scale: 1.1,
+      duration: 0.5,
+      ease: 'power2.out',
+    }, 0);
+
+    // Animate element scale
+    tl.to(elementRef.current, {
+      scale: 1.08,
+      duration: 0.4,
+      ease: 'power2.out',
+    }, 0);
+
+    if (isHovered) {
+      tl.play();
+    } else {
+      tl.reverse();
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, [isHovered, description]);
+
+  // Tooltip positioning based on labelPosition prop
+  const getTooltipStyles = (): React.CSSProperties => {
     const base: React.CSSProperties = {
       position: 'absolute',
-      width: '6px',
-      height: '6px',
-      background: 'var(--blueprint-border)',
-      borderRadius: '50%',
-      transition: 'transform 0.2s ease',
-      transform: isHovered ? 'scale(1)' : 'scale(0)',
+      padding: '16px 20px',
+      background: 'rgba(10, 25, 41, 0.98)',
+      border: '1px solid rgba(65, 145, 220, 0.4)',
+      borderRadius: '4px',
+      backdropFilter: 'blur(12px)',
+      zIndex: 100,
+      pointerEvents: 'none',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(65, 145, 220, 0.1) inset',
+      maxWidth: '240px',
+      minWidth: '180px',
     };
 
     switch (labelPosition) {
       case 'top':
-        return { ...base, top: '-5px', left: '50%', marginLeft: '-3px' };
+        return { ...base, bottom: 'calc(100% + 25px)', left: '50%', transform: 'translateX(-50%)' };
       case 'bottom':
-        return { ...base, bottom: '-20px', left: '45%', marginLeft: '-3px' };
+        return { ...base, top: 'calc(100% + 25px)', left: '50%', transform: 'translateX(-50%)' };
       case 'left':
-        return { ...base, left: '-25px', top: '50%', marginTop: '-3px' };
+        return { ...base, right: 'calc(100% + 25px)', top: '50%', transform: 'translateY(-50%)' };
       case 'right':
-        return { ...base, right: '-20px', top: '60%', marginTop: '-3px' };
+        return { ...base, left: 'calc(100% + 25px)', top: '50%', transform: 'translateY(-50%)' };
       default:
         return base;
     }
@@ -114,22 +138,118 @@ export default function BlueprintElement({
         {typeof children === 'function' ? children(isHovered) : children}
       </div>
 
-      {/* Connection dot */}
-      <div style={getDotStyles()} />
+      {/* Enhanced Tooltip */}
+      {isHovered && (
+        <div
+          ref={tooltipRef}
+          style={{
+            ...getTooltipStyles(),
+            opacity: 0,
+            scale: 0.8,
+          }}
+        >
+          <div
+            ref={labelRef}
+            style={{
+              fontSize: 'clamp(0.75rem, 1.8vw, 0.95rem)',
+              fontWeight: 700,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: '#ffffff',
+              marginBottom: description ? '8px' : 0,
+              opacity: 0,
+              transform: 'translateY(-10px)',
+            }}
+          >
+            {label}
+          </div>
+          {description && (
+            <div
+              ref={descRef}
+              style={{
+                fontSize: 'clamp(0.7rem, 1.4vw, 0.8rem)',
+                color: 'rgba(255, 255, 255, 0.7)',
+                lineHeight: 1.5,
+                opacity: 0,
+                transform: 'translateY(-5px)',
+                fontWeight: 400,
+              }}
+            >
+              {description}
+            </div>
+          )}
+          <div
+            style={{
+              fontSize: 'clamp(0.6rem, 1.1vw, 0.7rem)',
+              color: 'rgba(65, 145, 220, 0.8)',
+              marginTop: '12px',
+              paddingTop: '10px',
+              borderTop: '1px solid rgba(65, 145, 220, 0.15)',
+              letterSpacing: '0.5px',
+              fontWeight: 500,
+            }}
+          >
+            Click to explore →
+          </div>
+        </div>
+      )}
 
-      {/* Connection line */}
-      <div style={getLineStyles()} />
-
-      {/* Label */}
-      <div style={getLabelStyles()}>{label}</div>
-
-      {/* Glow effect on hover */}
+      {/* Enhanced Glow effect on hover */}
       <div
+        ref={glowRef}
         className="element-glow"
         style={{
-          opacity: isHovered ? 0.5 : 0,
+          position: 'absolute',
+          inset: '-30px',
+          background: 'radial-gradient(ellipse at center, rgba(65, 145, 220, 0.4) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: -1,
+          opacity: 0,
+          scale: 0.9,
         }}
       />
+
+      {/* Decorative corner brackets */}
+      {isHovered && (
+        <>
+          <div style={{
+            position: 'absolute',
+            top: -1,
+            left: -1,
+            width: '16px',
+            height: '16px',
+            borderTop: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderLeft: '1.5px solid rgba(65, 145, 220, 0.6)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: -1,
+            right: -1,
+            width: '16px',
+            height: '16px',
+            borderTop: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderRight: '1.5px solid rgba(65, 145, 220, 0.6)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: -1,
+            left: -1,
+            width: '16px',
+            height: '16px',
+            borderBottom: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderLeft: '1.5px solid rgba(65, 145, 220, 0.6)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: -1,
+            right: -1,
+            width: '16px',
+            height: '16px',
+            borderBottom: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderRight: '1.5px solid rgba(65, 145, 220, 0.6)',
+          }} />
+        </>
+      )}
     </>
   );
 
@@ -139,7 +259,7 @@ export default function BlueprintElement({
         ref={elementRef}
         data-element={id}
         className={`blueprint-element ${className}`}
-        style={{ ...style, opacity: 0 }}
+        style={{ ...style, opacity: 0, transition: 'transform 0.4s ease' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={onClick}

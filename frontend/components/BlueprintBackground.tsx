@@ -36,6 +36,7 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
   const svgRef = useRef<SVGSVGElement>(null);
   const annotationsRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const idleAnimationRef = useRef<gsap.core.Timeline | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Track dimensions
@@ -222,6 +223,58 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
     };
   }, [width, height, animateIn, onDrawComplete]);
 
+  // Idle animations for floating lines and subtle movements
+  useEffect(() => {
+    if (!svgRef.current || width === 0) return;
+
+    const svg = svgRef.current;
+    const idleTl = gsap.timeline({ repeat: -1 });
+
+    // Pulse hexagons subtly
+    idleTl.to('.svg-hexagon', {
+      opacity: (i) => 0.7 - i * 0.1,
+      duration: 3,
+      stagger: 0.2,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+    }, 0);
+
+    // Animate scanning lines
+    const scanLines = svg.querySelectorAll('.idle-scan-line');
+    scanLines.forEach((line, i) => {
+      idleTl.fromTo(line,
+        { strokeDashoffset: 0 },
+        { 
+          strokeDashoffset: -1000,
+          duration: 8 + i * 2,
+          repeat: -1,
+          ease: 'none',
+        }, 
+        i * 0.5
+      );
+    });
+
+    // Floating data points
+    const dataPoints = svg.querySelectorAll('.idle-data-point');
+    dataPoints.forEach((point, i) => {
+      idleTl.to(point, {
+        opacity: 0.8,
+        scale: 1.2,
+        duration: 2 + (i % 3) * 0.5,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
+      }, i * 0.3);
+    });
+
+    idleAnimationRef.current = idleTl;
+
+    return () => {
+      idleTl.kill();
+    };
+  }, [width, height]);
+
   if (width === 0) return null;
 
   return (
@@ -351,6 +404,49 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
           fill="none" stroke={strokeColorBright} strokeWidth={1.5} />
         <rect className="svg-draw svg-callout" x={rightPanelX - 177} y={53} width={174} height={114}
           fill="none" stroke={strokeColorBright} strokeWidth={0.5} />
+
+        {/* Idle scanning lines that move continuously */}
+        <line className="idle-scan-line"
+          x1={bp} y1={cy - 100} x2={width - bp} y2={cy - 100}
+          stroke="rgba(65, 145, 220, 0.3)" strokeWidth={1}
+          strokeDasharray="40,20" />
+        <line className="idle-scan-line"
+          x1={bp} y1={cy + 100} x2={width - bp} y2={cy + 100}
+          stroke="rgba(65, 145, 220, 0.25)" strokeWidth={0.8}
+          strokeDasharray="30,15" />
+        <line className="idle-scan-line"
+          x1={cx - 200} y1={bp} x2={cx - 200} y2={height - bp}
+          stroke="rgba(65, 145, 220, 0.2)" strokeWidth={0.8}
+          strokeDasharray="50,25" />
+        <line className="idle-scan-line"
+          x1={cx + 200} y1={bp} x2={cx + 200} y2={height - bp}
+          stroke="rgba(65, 145, 220, 0.2)" strokeWidth={0.8}
+          strokeDasharray="45,20" />
+
+        {/* Idle floating data points */}
+        {[...Array(12)].map((_, i) => {
+          const angle = (i / 12) * Math.PI * 2;
+          const radius = 300 + (i % 3) * 50;
+          const px = cx + Math.cos(angle) * radius;
+          const py = cy + Math.sin(angle) * radius;
+          return (
+            <circle key={`data-point-${i}`} className="idle-data-point"
+              cx={px} cy={py} r={2}
+              fill="rgba(65, 145, 220, 0.5)" opacity={0.3} />
+          );
+        })}
+
+        {/* Pulsing grid markers */}
+        {[...Array(8)].map((_, i) => {
+          const gx = bp + 100 + (i % 4) * 250;
+          const gy = bp + 100 + Math.floor(i / 4) * 300;
+          return (
+            <g key={`grid-marker-${i}`} className="idle-data-point">
+              <circle cx={gx} cy={gy} r={3} fill="none" stroke="rgba(65, 145, 220, 0.3)" strokeWidth={0.5} opacity={0.4} />
+              <circle cx={gx} cy={gy} r={1} fill="rgba(65, 145, 220, 0.6)" opacity={0.4} />
+            </g>
+          );
+        })}
       </svg>
 
       {/* Text annotations layer */}
