@@ -26,9 +26,9 @@ function TitleScreen({ onOpenBlueprint }: { onOpenBlueprint: () => void }) {
         <BlueprintGrid />
       </div>
 
-      <div className="relative z-10 h-full flex flex-col items-center justify-center">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
         <h1 className="main-title text-center">UNSW Engineering Society</h1>
-        <p className="subtitle mb-8">
+        <p className="subtitle mb-8 text-center">
           <span className="subtitle-bracket">[</span>
           Innovate. Create. Engineer.
           <span className="subtitle-bracket">]</span>
@@ -68,7 +68,7 @@ function BlueprintScreen({
       <BlueprintBackground animateIn onDrawComplete={handleDrawComplete} />
 
       {bgReady && (
-        <div className="relative w-full h-full">
+        <div className="absolute inset-0">
           <AnimatePresence mode="wait">
             {!activeSection ? (
               <BlueprintMap key="map" onSectionClick={onSectionClick} />

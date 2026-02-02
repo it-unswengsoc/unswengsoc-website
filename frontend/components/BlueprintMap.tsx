@@ -60,19 +60,17 @@ interface BlueprintMapProps {
 
 export default function BlueprintMap({ onSectionClick, disableEntrance = false }: BlueprintMapProps) {
   return (
-    <div
-      className="blueprint-canvas"
-    >
+    <div className="blueprint-canvas absolute inset-0">
       {/* Events - Flask Sprite */}
       <BlueprintElement
         id="events"
         label="events"
         style={{
           position: 'absolute',
-          left: '10%',
-          top: '20%',
-          width: '120px',
-          height: '160px',
+          left: '18%',
+          top: '12%',
+          width: 'clamp(80px, 15vw, 120px)',
+          height: 'clamp(100px, 20vw, 160px)',
         }}
         labelPosition="right"
         onClick={() => onSectionClick('events')}
@@ -100,9 +98,9 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         style={{
           position: 'absolute',
           left: '15%',
-          top: '50%',
-          width: '300px',
-          height: '300px',
+          top: '62%',
+          width: 'clamp(120px, 20vw, 300px)',
+          height: 'clamp(120px, 20vw, 300px)',
         }}
         labelPosition="right"
         onClick={() => onSectionClick('sponsors')}
@@ -124,35 +122,39 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
       </BlueprintElement>
 
       {/* About - Animated Logo Sprite (Center) */}
-      <BlueprintElement
-        id="about"
-        label="about us"
-        style={{
-          position: 'absolute',
-          left: '37%',
-          top: '26%',
-          transform: 'translate(-50%, -50%)',
-          width: '400px',
-          height: '400px',
-        }}
-        labelPosition="bottom"
-        onClick={() => onSectionClick('about')}
-        animationDelay={0.4}
-        disableEntrance={disableEntrance}
-      >
-        {(isHovered) => (
-          <AnimatedSprite
-            src={LOGO_SPRITE_CONFIG.src}
-            frameWidth={LOGO_SPRITE_CONFIG.frameWidth}
-            frameHeight={LOGO_SPRITE_CONFIG.frameHeight}
-            columns={LOGO_SPRITE_CONFIG.columns}
-            rows={LOGO_SPRITE_CONFIG.rows}
-            totalFrames={LOGO_SPRITE_CONFIG.totalFrames}
-            isHovered={isHovered}
-            displaySize={350}
-          />
-        )}
-      </BlueprintElement>
+      <div style={{
+        position: 'absolute',
+        left: 'calc(50% + 15px)',
+        top: 'calc(50% + 15px)',
+        transform: 'translate(-50%, -50%)',
+      }}>
+        <BlueprintElement
+          id="about"
+          label="about us"
+          style={{
+            position: 'relative',
+            width: 'clamp(200px, 30vw, 400px)',
+            height: 'clamp(200px, 30vw, 400px)',
+          }}
+          labelPosition="bottom"
+          onClick={() => onSectionClick('about')}
+          animationDelay={0.4}
+          disableEntrance={disableEntrance}
+        >
+          {(isHovered) => (
+            <AnimatedSprite
+              src={LOGO_SPRITE_CONFIG.src}
+              frameWidth={LOGO_SPRITE_CONFIG.frameWidth}
+              frameHeight={LOGO_SPRITE_CONFIG.frameHeight}
+              columns={LOGO_SPRITE_CONFIG.columns}
+              rows={LOGO_SPRITE_CONFIG.rows}
+              totalFrames={LOGO_SPRITE_CONFIG.totalFrames}
+              isHovered={isHovered}
+              displaySize={350}
+            />
+          )}
+        </BlueprintElement>
+      </div>
 
       {/* Programs - Cog Sprite */}
       <BlueprintElement
@@ -160,10 +162,10 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         label="programs"
         style={{
           position: 'absolute',
-          right: '15%',
-          top: '10%',
-          width: '200px',
-          height: '200px',
+          right: '18%',
+          top: '15%',
+          width: 'clamp(100px, 15vw, 200px)',
+          height: 'clamp(100px, 15vw, 200px)',
         }}
         labelPosition="left"
         onClick={() => onSectionClick('programs')}
@@ -190,10 +192,10 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         label="jobs board"
         style={{
           position: 'absolute',
-          right: '15%',
-          bottom: '15%',
-          width: '130px',
-          height: '100px',
+          right: '18%',
+          bottom: '18%',
+          width: 'clamp(100px, 12vw, 130px)',
+          height: 'clamp(80px, 10vw, 100px)',
         }}
         labelPosition="left"
         onClick={() => onSectionClick('jobs')}

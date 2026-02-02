@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 import gsap from 'gsap';
 
 interface AnimatedSpriteProps {
@@ -29,9 +29,37 @@ export default function AnimatedSprite({
   const spriteRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const currentFrameRef = useRef(0);
+  const [responsiveSize, setResponsiveSize] = useState(displaySize);
+
+  // Calculate responsive size based on screen width
+  useEffect(() => {
+    const updateSize = () => {
+      if (!displaySize) return;
+      
+      const width = window.innerWidth;
+      let scaleFactor = 1;
+      
+      if (width < 640) {
+        // Mobile - 50% of original size
+        scaleFactor = 0.5;
+      } else if (width < 768) {
+        // Small tablets - 65% of original size
+        scaleFactor = 0.65;
+      } else if (width < 1024) {
+        // Tablets - 80% of original size
+        scaleFactor = 0.8;
+      }
+      
+      setResponsiveSize(displaySize * scaleFactor);
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, [displaySize]);
 
   // Calculate scale if displaySize is provided
-  const scale = displaySize ? displaySize / Math.max(frameWidth, frameHeight) : 1;
+  const scale = responsiveSize ? responsiveSize / Math.max(frameWidth, frameHeight) : 1;
   const displayWidth = frameWidth * scale;
   const displayHeight = frameHeight * scale;
 

@@ -4,16 +4,16 @@ import { Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="relative z-10 py-20 px-8">
+    <section id="contact" className="relative z-10 py-12 md:py-20 px-4 md:px-8">
       <div id="contact-inner" className="max-w-4xl mx-auto">
-        <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-2 tracking-tight">
+        <h2 className="font-sans font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-2 tracking-tight">
           Contact Us
         </h2>
-        <p className="font-mono text-[#94a3b8] text-sm mb-12">
+        <p className="font-mono text-[#94a3b8] text-xs md:text-sm mb-8 md:mb-12">
           [ Get in touch with the team ]
         </p>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Contact Info */}
           <div className="space-y-6">
             <div className="border border-[rgba(65,145,220,0.15)] p-6 bg-[rgba(65,145,220,0.03)]">

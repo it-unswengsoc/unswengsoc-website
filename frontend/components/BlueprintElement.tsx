@@ -34,7 +34,7 @@ export default function BlueprintElement({
     const base: React.CSSProperties = {
       position: 'absolute',
       whiteSpace: 'nowrap',
-      fontSize: '1.4rem',
+      fontSize: 'clamp(0.8rem, 2vw, 1.4rem)',
       letterSpacing: '2px',
       textTransform: 'lowercase',
       color: 'var(--text-color)',
@@ -45,13 +45,13 @@ export default function BlueprintElement({
 
     switch (labelPosition) {
       case 'top':
-        return { ...base, top: '-80px', left: '50%', transform: isHovered ? 'translateX(-50%)' : 'translateX(-50%) translateY(-5px)' };
+        return { ...base, top: 'clamp(-60px, -10vw, -80px)', left: '50%', transform: isHovered ? 'translateX(-50%)' : 'translateX(-50%) translateY(-5px)' };
       case 'bottom':
-        return { ...base, bottom: '-120px', left: '45%', transform: isHovered ? 'translateX(-50%)' : 'translateX(-50%) translateY(5px)' };
+        return { ...base, bottom: 'clamp(-80px, -12vw, -120px)', left: '45%', transform: isHovered ? 'translateX(-50%)' : 'translateX(-50%) translateY(5px)' };
       case 'left':
-        return { ...base, left: '-225px', top: '50%', transform: isHovered ? 'translateY(-50%)' : 'translateY(-50%) translateX(-5px)' };
+        return { ...base, left: 'clamp(-150px, -20vw, -225px)', top: '50%', transform: isHovered ? 'translateY(-50%)' : 'translateY(-50%) translateX(-5px)' };
       case 'right':
-        return { ...base, right: '-190px', top: '60%', transform: isHovered ? 'translateY(-50%)' : 'translateY(-50%) translateX(5px)' };
+        return { ...base, right: 'clamp(-120px, -18vw, -190px)', top: '60%', transform: isHovered ? 'translateY(-50%)' : 'translateY(-50%) translateX(5px)' };
       default:
         return base;
     }

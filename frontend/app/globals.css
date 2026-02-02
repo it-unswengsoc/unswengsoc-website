@@ -249,7 +249,7 @@ body {
 
 .main-title {
   font-family: var(--font-sans), sans-serif;
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 700;
   letter-spacing: -0.025em;
   margin-bottom: 8px;
@@ -257,7 +257,7 @@ body {
 }
 
 .subtitle {
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
   color: var(--text-dim);
   letter-spacing: 2px;
 }
@@ -302,13 +302,19 @@ body {
 .open-blueprint-btn {
   border: 1px solid rgba(65, 145, 220, 0.4);
   padding: 0.75rem 2rem;
-  font-size: 0.875rem;
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: white;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .open-blueprint-btn {
+    padding: 0.6rem 1.5rem;
+  }
 }
 
 .open-blueprint-btn:hover {

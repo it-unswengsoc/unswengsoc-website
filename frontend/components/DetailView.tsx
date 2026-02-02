@@ -136,26 +136,26 @@ export default function DetailView({ data, section, onClose }: DetailViewProps) 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="fixed top-6 right-6 z-50 p-2 border border-[rgba(65,145,220,0.15)] bg-background/80 backdrop-blur-sm hover:bg-[rgba(65,145,220,0.1)] transition-colors"
+        className="fixed top-4 md:top-6 right-4 md:right-6 z-50 p-2 border border-[rgba(65,145,220,0.15)] bg-background/80 backdrop-blur-sm hover:bg-[rgba(65,145,220,0.1)] transition-colors"
         aria-label="Close section"
       >
-        <X className="w-5 h-5 text-white" />
+        <X className="w-5 h-5 md:w-6 md:h-6 text-white" />
       </motion.button>
 
       {/* Content area - above overlay */}
-      <div className="absolute inset-0 z-20 overflow-y-auto px-8 pt-24 pb-24">
+      <div className="absolute inset-0 z-20 overflow-y-auto px-4 md:px-8 pt-16 md:pt-24 pb-16 md:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-4xl w-full ml-8 md:ml-16 lg:ml-24"
+          className="max-w-4xl w-full md:ml-8 lg:ml-16 xl:ml-24"
         >
           {/* Section title */}
-          <div className="mb-8">
-            <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-2 tracking-tight">
+          <div className="mb-6 md:mb-8">
+            <h2 className="font-sans font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-2 tracking-tight">
               {data.title}
             </h2>
-            <p className="font-mono text-[#94a3b8] text-sm">
+            <p className="font-mono text-[#94a3b8] text-xs md:text-sm">
               [ {data.subtitle} ]
             </p>
           </div>
