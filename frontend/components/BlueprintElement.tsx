@@ -151,9 +151,10 @@ export default function BlueprintElement({
           <div
             ref={labelRef}
             style={{
+              fontFamily: 'Rajdhani, sans-serif',
               fontSize: 'clamp(0.75rem, 1.8vw, 0.95rem)',
-              fontWeight: 700,
-              letterSpacing: '1.5px',
+              fontWeight: 800,
+              letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#ffffff',
               marginBottom: description ? '8px' : 0,
@@ -167,12 +168,13 @@ export default function BlueprintElement({
             <div
               ref={descRef}
               style={{
+                fontFamily: 'Inter Tight, sans-serif',
                 fontSize: 'clamp(0.7rem, 1.4vw, 0.8rem)',
-                color: 'rgba(255, 255, 255, 0.7)',
+                color: 'rgba(255, 255, 255, 0.75)',
                 lineHeight: 1.5,
                 opacity: 0,
                 transform: 'translateY(-5px)',
-                fontWeight: 400,
+                fontWeight: 500,
               }}
             >
               {description}
@@ -180,13 +182,14 @@ export default function BlueprintElement({
           )}
           <div
             style={{
+              fontFamily: 'Rajdhani, sans-serif',
               fontSize: 'clamp(0.6rem, 1.1vw, 0.7rem)',
-              color: 'rgba(65, 145, 220, 0.8)',
+              color: 'rgba(65, 145, 220, 0.9)',
               marginTop: '12px',
               paddingTop: '10px',
               borderTop: '1px solid rgba(65, 145, 220, 0.15)',
-              letterSpacing: '0.5px',
-              fontWeight: 500,
+              letterSpacing: '1px',
+              fontWeight: 600,
             }}
           >
             Click to explore →

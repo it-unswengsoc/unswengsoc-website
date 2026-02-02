@@ -9,6 +9,7 @@ import { BlueprintGrid } from '@/components/BlueprintGrid';
 import DetailView from '@/components/DetailView';
 import LoadingScreen from '@/components/LoadingScreen';
 import ContactSection from '@/components/ContactSection';
+import TitleAnimations from '@/components/TitleAnimations';
 import { Section, Screen } from '@/components/types';
 import { sectionDetails } from '@/components/sectionData';
 
@@ -24,10 +25,11 @@ function TitleScreen({ onOpenBlueprint }: { onOpenBlueprint: () => void }) {
     >
       <div className="absolute inset-0 z-0 pointer-events-none bg-background">
         <BlueprintGrid />
+        <TitleAnimations />
       </div>
 
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-        <h1 className="main-title text-center">UNSW Engineering Society</h1>
+        <h1 className="main-title text-center">UNSW ENGINEERING SOCIETY</h1>
         <p className="subtitle mb-8 text-center">
           <span className="subtitle-bracket">[</span>
           Innovate. Create. Engineer.

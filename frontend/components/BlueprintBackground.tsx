@@ -450,7 +450,7 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
       </svg>
 
       {/* Text annotations layer */}
-      <div ref={annotationsRef} className="fixed inset-0" style={{ opacity: animateIn ? 0 : 1 }}>
+      <div ref={annotationsRef} className="fixed inset-0 hidden md:block" style={{ opacity: animateIn ? 0 : 1 }}>
         {/* Top-left title block */}
         <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 58, fontSize: 12, opacity: 0.8 }}>SCHEMATIC</div>
         <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 76, fontSize: 9, opacity: 0.8 }}>REV. 2.4.1</div>
