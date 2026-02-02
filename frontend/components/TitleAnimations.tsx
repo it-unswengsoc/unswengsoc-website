@@ -138,20 +138,22 @@ export default function TitleAnimations() {
         </div>
       `;
       
-      containerRef.current.appendChild(readout);
-      readouts.push(readout);
+      if (containerRef.current) {
+        containerRef.current.appendChild(readout);
+        readouts.push(readout);
 
-      // Animate numbers changing
-      const valueEl = readout.querySelector('.readout-value');
-      if (valueEl) {
-        const interval = setInterval(() => {
-          const newVal = Math.floor(Math.random() * 100);
-          gsap.to(valueEl, {
-            innerHTML: newVal,
-            duration: 0.3,
-            snap: { innerHTML: 1 },
-          });
-        }, 3000 + Math.random() * 2000);
+        // Animate numbers changing
+        const valueEl = readout.querySelector('.readout-value');
+        if (valueEl) {
+          const interval = setInterval(() => {
+            const newVal = Math.floor(Math.random() * 100);
+            gsap.to(valueEl, {
+              innerHTML: newVal,
+              duration: 0.3,
+              snap: { innerHTML: 1 },
+            });
+          }, 3000 + Math.random() * 2000);
+        }
       }
     });
 
