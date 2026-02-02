@@ -151,9 +151,9 @@ export default function BlueprintElement({
           <div
             ref={labelRef}
             style={{
-              fontFamily: 'Rajdhani, sans-serif',
-              fontSize: 'clamp(0.75rem, 1.8vw, 0.95rem)',
-              fontWeight: 800,
+              fontFamily: 'Cormorant Garamond, serif',
+              fontSize: 'clamp(0.8rem, 1.8vw, 1rem)',
+              fontWeight: 700,
               letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#ffffff',
@@ -168,13 +168,13 @@ export default function BlueprintElement({
             <div
               ref={descRef}
               style={{
-                fontFamily: 'Inter Tight, sans-serif',
-                fontSize: 'clamp(0.7rem, 1.4vw, 0.8rem)',
+                fontFamily: 'Cormorant Garamond, serif',
+                fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)',
                 color: 'rgba(255, 255, 255, 0.75)',
-                lineHeight: 1.5,
+                lineHeight: 1.6,
                 opacity: 0,
                 transform: 'translateY(-5px)',
-                fontWeight: 500,
+                fontWeight: 300,
               }}
             >
               {description}
@@ -182,14 +182,14 @@ export default function BlueprintElement({
           )}
           <div
             style={{
-              fontFamily: 'Rajdhani, sans-serif',
-              fontSize: 'clamp(0.6rem, 1.1vw, 0.7rem)',
+              fontFamily: 'Cormorant Garamond, serif',
+              fontSize: 'clamp(0.65rem, 1.1vw, 0.75rem)',
               color: 'rgba(65, 145, 220, 0.9)',
               marginTop: '12px',
               paddingTop: '10px',
               borderTop: '1px solid rgba(65, 145, 220, 0.15)',
               letterSpacing: '1px',
-              fontWeight: 600,
+              fontWeight: 500,
             }}
           >
             Click to explore →

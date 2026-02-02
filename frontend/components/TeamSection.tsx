@@ -99,7 +99,7 @@ export default function TeamSection() {
 
   return (
     <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-[rgba(65,145,220,0.15)]">
-      <h3 className="font-mono text-xs md:text-sm text-[#4191dc] mb-3 md:mb-4">Our Team</h3>
+      <h3 className="text-xs md:text-sm text-[#4191dc] mb-3 md:mb-4 font-light">Our Team</h3>
       <p className="text-[#94a3b8] text-sm md:text-base leading-relaxed mb-4 md:mb-6">
         Meet the dedicated subteams who work tirelessly to create memorable experiences
         and opportunities for our engineering community.
@@ -122,8 +122,8 @@ export default function TeamSection() {
                   : 'border-[rgba(65,145,220,0.15)] bg-[rgba(65,145,220,0.03)] hover:bg-[rgba(65,145,220,0.08)] hover:border-[rgba(65,145,220,0.3)]'
               )}
             >
-              <h4 className="font-semibold text-white text-xs md:text-sm">{team.name}</h4>
-              <p className="font-mono text-xs text-[#94a3b8] mt-1 line-clamp-2">
+              <h4 className="text-white text-xs md:text-sm font-medium">{team.name}</h4>
+              <p className="text-xs text-[#94a3b8] mt-1 line-clamp-2 font-light">
                 {team.description}
               </p>
             </button>
@@ -143,8 +143,8 @@ export default function TeamSection() {
               <div className="border border-[#4191dc] bg-[rgba(65,145,220,0.05)] p-3 md:p-4 h-full">
                 <div className="flex justify-between items-start mb-3 md:mb-4">
                   <div>
-                    <h4 className="font-semibold text-white text-sm md:text-base">{selectedSubteam.name}</h4>
-                    <p className="font-mono text-xs text-[#94a3b8] mt-1">
+                    <h4 className="text-white text-sm md:text-base font-medium">{selectedSubteam.name}</h4>
+                    <p className="text-xs text-[#94a3b8] mt-1 font-light">
                       {selectedSubteam.description}
                     </p>
                   </div>
@@ -163,13 +163,13 @@ export default function TeamSection() {
                       className="flex items-center gap-2 md:gap-3 border border-[rgba(65,145,220,0.15)] p-2 md:p-3 bg-[rgba(65,145,220,0.03)]"
                     >
                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[rgba(65,145,220,0.1)] border border-[rgba(65,145,220,0.15)] flex items-center justify-center flex-shrink-0">
-                        <span className="font-mono text-xs text-[#4191dc]">
+                        <span className="text-xs text-[#4191dc] font-light">
                           {director.name.split(' ').map((n) => n[0]).join('')}
                         </span>
                       </div>
                       <div>
-                        <h5 className="font-semibold text-white text-xs md:text-sm">{director.name}</h5>
-                        <p className="font-mono text-xs text-[#94a3b8]">{director.role}</p>
+                        <h5 className="text-white text-xs md:text-sm font-medium">{director.name}</h5>
+                        <p className="text-xs text-[#94a3b8] font-light">{director.role}</p>
                       </div>
                     </div>
                   ))}

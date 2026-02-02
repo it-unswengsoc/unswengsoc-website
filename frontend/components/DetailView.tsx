@@ -152,10 +152,10 @@ export default function DetailView({ data, section, onClose }: DetailViewProps) 
         >
           {/* Section title */}
           <div className="mb-6 md:mb-8">
-            <h2 className="font-sans font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-2 tracking-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-2 tracking-tight font-bold">
               {data.title}
             </h2>
-            <p className="font-mono text-[#94a3b8] text-xs md:text-sm">
+            <p className="text-[#94a3b8] text-xs md:text-sm font-light">
               [ {data.subtitle} ]
             </p>
           </div>

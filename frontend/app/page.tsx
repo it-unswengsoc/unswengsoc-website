@@ -116,7 +116,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="min-h-screen h-screen text-white font-mono overflow-hidden relative" style={{ background: 'var(--background)' }}>
+    <div className="min-h-screen h-screen text-white overflow-hidden relative" style={{ background: 'var(--background)' }}>
       <AnimatePresence>
         {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
       </AnimatePresence>

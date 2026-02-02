@@ -19,9 +19,9 @@ export default function Footer() {
                 height={32}
                 className="object-contain"
               />
-              <span className="font-bold text-white">UNSW Engineering Society</span>
+              <span className="text-white font-medium">UNSW Engineering Society</span>
             </div>
-            <p className="text-sm text-[#94a3b8] leading-relaxed">
+            <p className="text-sm text-[#94a3b8] leading-relaxed font-light">
               Empowering the next generation of engineers through events,
               networking, and professional development opportunities.
             </p>
@@ -29,7 +29,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-white mb-4 text-sm tracking-wider uppercase">
+            <h4 className="text-white mb-4 text-sm tracking-wider uppercase font-medium">
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm">
@@ -58,7 +58,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold text-white mb-4 text-sm tracking-wider uppercase">
+            <h4 className="text-white mb-4 text-sm tracking-wider uppercase font-medium">
               Resources
             </h4>
             <ul className="space-y-2 text-sm">
@@ -88,10 +88,10 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[rgba(65,145,220,0.15)] flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-[#94a3b8] font-mono">
+          <p className="text-xs text-[#94a3b8] font-light">
             © {currentYear} UNSW Engineering Society.
           </p>
-          <p className="text-xs text-[#94a3b8] font-mono">
+          <p className="text-xs text-[#94a3b8] font-light">
             Made with ♡ by EngSoc IT
           </p>
         </div>

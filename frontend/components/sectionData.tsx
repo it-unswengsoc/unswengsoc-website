@@ -96,22 +96,22 @@ export const sectionDetails: Record<string, SectionData> = {
     subtitle: 'Engineering excellence since 1963',
     content: (
       <div className="space-y-6">
-        <p className="text-[#94a3b8] leading-relaxed">
+        <p className="text-[#94a3b8] leading-relaxed font-light">
           The UNSW Engineering Society is one of the largest and most active student societies
           at the University of New South Wales. For over 60 years, we&apos;ve been the home for
           engineering students across all disciplines.
         </p>
         <div className="grid gap-4 mt-8">
           <div className="border border-[rgba(65,145,220,0.15)] p-4 bg-[rgba(65,145,220,0.03)]">
-            <h3 className="font-mono text-sm text-[#4191dc] mb-2">Our Mission</h3>
-            <p className="text-sm text-[#94a3b8]">
+            <h3 className="text-sm text-[#4191dc] mb-2 font-light">Our Mission</h3>
+            <p className="text-sm text-[#94a3b8] font-light">
               To foster a vibrant engineering community that supports academic excellence,
               professional development, and lifelong friendships.
             </p>
           </div>
           <div className="border border-[rgba(65,145,220,0.15)] p-4 bg-[rgba(65,145,220,0.03)]">
-            <h3 className="font-mono text-sm text-[#4191dc] mb-2">What We Do</h3>
-            <ul className="text-sm text-[#94a3b8] space-y-1">
+            <h3 className="text-sm text-[#4191dc] mb-2 font-light">What We Do</h3>
+            <ul className="text-sm text-[#94a3b8] space-y-1 font-light">
               <li>- Industry networking events</li>
               <li>- Technical workshops and competitions</li>
               <li>- Social events and camps</li>
@@ -120,19 +120,19 @@ export const sectionDetails: Record<string, SectionData> = {
             </ul>
           </div>
           <div className="border border-[rgba(65,145,220,0.15)] p-4 bg-[rgba(65,145,220,0.03)]">
-            <h3 className="font-mono text-sm text-[#4191dc] mb-2">By The Numbers</h3>
+            <h3 className="text-sm text-[#4191dc] mb-2 font-light">By The Numbers</h3>
             <div className="grid grid-cols-3 gap-4 mt-2">
               <div className="text-center">
-                <div className="text-2xl font-bold text-white">5000+</div>
-                <div className="text-xs text-[#94a3b8]">Members</div>
+                <div className="text-2xl text-white font-bold">5000+</div>
+                <div className="text-xs text-[#94a3b8] font-light">Members</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-white">50+</div>
-                <div className="text-xs text-[#94a3b8]">Events/Year</div>
+                <div className="text-2xl text-white font-bold">50+</div>
+                <div className="text-xs text-[#94a3b8] font-light">Events/Year</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-white">60+</div>
-                <div className="text-xs text-[#94a3b8]">Years Active</div>
+                <div className="text-2xl text-white font-bold">60+</div>
+                <div className="text-xs text-[#94a3b8] font-light">Years Active</div>
               </div>
             </div>
           </div>
@@ -148,7 +148,7 @@ export const sectionDetails: Record<string, SectionData> = {
     subtitle: 'Where innovation meets opportunity',
     content: (
       <div className="space-y-6">
-        <p className="text-[#94a3b8] leading-relaxed">
+        <p className="text-[#94a3b8] leading-relaxed font-light">
           From industry networking nights to hands-on workshops, our events are designed to
           complement your engineering education with real-world experience and connections.
         </p>
@@ -159,10 +159,10 @@ export const sectionDetails: Record<string, SectionData> = {
               className="border border-[rgba(65,145,220,0.15)] p-4 bg-[rgba(65,145,220,0.03)]"
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-white">{event.title}</h3>
-                <span className="font-mono text-xs text-[#4191dc]">{event.date}</span>
+                <h3 className="text-white font-medium">{event.title}</h3>
+                <span className="text-xs text-[#4191dc] font-light">{event.date}</span>
               </div>
-              <p className="text-sm text-[#94a3b8]">{event.description}</p>
+              <p className="text-sm text-[#94a3b8] font-light">{event.description}</p>
             </div>
           ))}
         </div>
@@ -174,7 +174,7 @@ export const sectionDetails: Record<string, SectionData> = {
     subtitle: 'Launch your engineering career',
     content: (
       <div className="space-y-6">
-        <p className="text-[#94a3b8] leading-relaxed">
+        <p className="text-[#94a3b8] leading-relaxed font-light">
           Browse internship and graduate opportunities from our industry partners.
           These positions are exclusively shared with UNSW Engineering Society members.
         </p>
@@ -186,11 +186,11 @@ export const sectionDetails: Record<string, SectionData> = {
             >
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h3 className="font-semibold text-white">{job.title}</h3>
-                  <p className="font-mono text-xs text-[#94a3b8]">{job.company}</p>
+                  <h3 className="text-white font-medium">{job.title}</h3>
+                  <p className="text-xs text-[#94a3b8] font-light">{job.company}</p>
                 </div>
                 <span className={cn(
-                  'font-mono text-xs px-2 py-1 rounded',
+                  'text-xs px-2 py-1 rounded font-light',
                   job.type === 'internship' && 'bg-[rgba(65,145,220,0.2)] text-[#4191dc]',
                   job.type === 'graduate' && 'bg-[rgba(100,200,100,0.2)] text-[#64c864]',
                   job.type === 'part-time' && 'bg-[rgba(200,150,50,0.2)] text-[#c89632]'
@@ -198,7 +198,7 @@ export const sectionDetails: Record<string, SectionData> = {
                   {job.type}
                 </span>
               </div>
-              <p className="text-sm text-[#94a3b8]">{job.description}</p>
+              <p className="text-sm text-[#94a3b8] font-light">{job.description}</p>
             </div>
           ))}
         </div>
@@ -210,7 +210,7 @@ export const sectionDetails: Record<string, SectionData> = {
     subtitle: 'Grow your skills and network',
     content: (
       <div className="space-y-6">
-        <p className="text-[#94a3b8] leading-relaxed">
+        <p className="text-[#94a3b8] leading-relaxed font-light">
           Explore our mentorship programs, skill development workshops, and industry partnerships
           designed to accelerate your engineering journey.
         </p>
@@ -221,9 +221,9 @@ export const sectionDetails: Record<string, SectionData> = {
               className="border border-[rgba(65,145,220,0.15)] p-4 bg-[rgba(65,145,220,0.03)]"
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-white">{program.title}</h3>
+                <h3 className="text-white font-medium">{program.title}</h3>
                 <span className={cn(
-                  'font-mono text-xs px-2 py-1 rounded',
+                  'text-xs px-2 py-1 rounded font-light',
                   program.status === 'open' && 'bg-[rgba(100,200,100,0.2)] text-[#64c864]',
                   program.status === 'coming-soon' && 'bg-[rgba(200,150,50,0.2)] text-[#c89632]',
                   program.status === 'closed' && 'bg-[rgba(200,100,100,0.2)] text-[#c86464]'
@@ -231,7 +231,7 @@ export const sectionDetails: Record<string, SectionData> = {
                   {program.status === 'coming-soon' ? 'Coming Soon' : program.status}
                 </span>
               </div>
-              <p className="text-sm text-[#94a3b8]">{program.description}</p>
+              <p className="text-sm text-[#94a3b8] font-light">{program.description}</p>
             </div>
           ))}
         </div>
@@ -243,7 +243,7 @@ export const sectionDetails: Record<string, SectionData> = {
     subtitle: 'Partners in engineering excellence',
     content: (
       <div className="space-y-6">
-        <p className="text-[#94a3b8] leading-relaxed">
+        <p className="text-[#94a3b8] leading-relaxed font-light">
           Our sponsors make it possible for us to deliver exceptional experiences to our members.
           We&apos;re proud to partner with industry leaders who share our commitment to developing
           the next generation of engineers.
@@ -252,7 +252,7 @@ export const sectionDetails: Record<string, SectionData> = {
           {(['gold', 'silver', 'bronze'] as const).map((tier) => (
             <div key={tier}>
               <h3 className={cn(
-                'font-mono text-sm mb-3 uppercase tracking-wider',
+                'text-sm mb-3 uppercase tracking-wider font-light',
                 tier === 'gold' && 'text-yellow-400',
                 tier === 'silver' && 'text-gray-300',
                 tier === 'bronze' && 'text-orange-400'
@@ -275,7 +275,7 @@ export const sectionDetails: Record<string, SectionData> = {
           ))}
         </div>
         <div className="border border-[rgba(65,145,220,0.3)] p-4 bg-[rgba(65,145,220,0.05)] mt-8">
-          <p className="text-sm text-[#94a3b8] text-center">
+          <p className="text-sm text-[#94a3b8] text-center font-light">
             Interested in partnering with us? <br />
             <span className="text-[#4191dc]">sponsorship@engsoc.unsw.edu.au</span>
           </p>

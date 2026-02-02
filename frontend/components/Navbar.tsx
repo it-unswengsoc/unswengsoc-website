@@ -32,7 +32,7 @@ export default function Navbar({ currentScreen, onNavigate, hidden = false }: Na
             onClick={() => handleNavigate('title')}
             className="pointer-events-auto absolute top-4 md:top-6 left-4 md:left-6 hover:opacity-80 transition-opacity"
           >
-            <span className="font-bold tracking-widest text-xs md:text-sm text-white uppercase">EngSoc</span>
+            <span className="tracking-widest text-xs md:text-sm text-white uppercase font-medium">EngSoc</span>
           </button>
 
           {/* Desktop Nav links */}

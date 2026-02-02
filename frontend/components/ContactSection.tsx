@@ -6,10 +6,10 @@ export default function ContactSection() {
   return (
     <section id="contact" className="relative z-10 py-12 md:py-20 px-4 md:px-8">
       <div id="contact-inner" className="max-w-4xl mx-auto">
-        <h2 className="font-sans font-bold text-3xl md:text-4xl lg:text-5xl text-white mb-2 tracking-tight">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-2 tracking-tight font-bold">
           Contact Us
         </h2>
-        <p className="font-mono text-[#94a3b8] text-xs md:text-sm mb-8 md:mb-12">
+        <p className="text-[#94a3b8] text-xs md:text-sm mb-8 md:mb-12 font-light">
           [ Get in touch with the team ]
         </p>
 
@@ -22,13 +22,13 @@ export default function ContactSection() {
                   <Mail className="w-5 h-5 text-[#4191dc]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">Email</h3>
-                  <p className="text-sm text-[#94a3b8]">General enquiries</p>
+                  <h3 className="text-white font-medium">Email</h3>
+                  <p className="text-sm text-[#94a3b8] font-light">General enquiries</p>
                 </div>
               </div>
               <a
                 href="mailto:contact@engsoc.unsw.edu.au"
-                className="text-[#4191dc] hover:text-white transition-colors font-mono text-sm"
+                className="text-[#4191dc] hover:text-white transition-colors text-sm font-light"
               >
                 contact@engsoc.unsw.edu.au
               </a>
@@ -40,11 +40,11 @@ export default function ContactSection() {
                   <MapPin className="w-5 h-5 text-[#4191dc]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">Location</h3>
-                  <p className="text-sm text-[#94a3b8]">Find us on campus</p>
+                  <h3 className="text-white font-medium">Location</h3>
+                  <p className="text-sm text-[#94a3b8] font-light">Find us on campus</p>
                 </div>
               </div>
-              <p className="text-[#94a3b8] font-mono text-sm">
+              <p className="text-[#94a3b8] text-sm font-light">
                 UNSW Kensington Campus<br />
                 Sydney, NSW 2052
               </p>
@@ -53,7 +53,7 @@ export default function ContactSection() {
 
           {/* Social Links */}
           <div className="border border-[rgba(65,145,220,0.15)] p-6 bg-[rgba(65,145,220,0.03)]">
-            <h3 className="font-semibold text-white mb-6">Follow Us</h3>
+            <h3 className="text-white mb-6 font-medium">Follow Us</h3>
             <div className="space-y-4">
               <a
                 href="https://instagram.com/unswengsoc"
