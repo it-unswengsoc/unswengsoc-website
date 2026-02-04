@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import gsap from 'gsap';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -11,9 +12,33 @@ interface LoadingScreenProps {
 export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const isComplete = loadingProgress >= 100;
+  const dotRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
-    // Animate loading bar
+    // GSAP animate small dot around circle path
+    if (dotRef.current) {
+      const radius = 90;
+      const centerX = 100;
+      const centerY = 100;
+      
+      gsap.to(dotRef.current, {
+        duration: 2,
+        ease: 'none',
+        repeat: -1,
+        onUpdate: function() {
+          const progress = this.progress();
+          const angle = progress * Math.PI * 2 + Math.PI; // Start at left (9 o'clock)
+          const x = centerX + radius * Math.cos(angle);
+          const y = centerY + radius * Math.sin(angle);
+          if (dotRef.current) {
+            dotRef.current.setAttribute('cx', x.toString());
+            dotRef.current.setAttribute('cy', y.toString());
+          }
+        },
+      });
+    }
+
+    // Update progress state
     const progressInterval = setInterval(() => {
       setLoadingProgress((prev) => {
         if (prev >= 100) {
@@ -22,9 +47,9 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         }
         return prev + 2;
       });
-    }, 40); // Updates every 40ms to reach 100% in 2 seconds
+    }, 40);
 
-    // Notify parent after 2.5 seconds (extra 0.5s for logo fade-out animation)
+    // Notify parent after 2.5 seconds
     const timer = setTimeout(() => {
       onLoadingComplete();
     }, 2500);
@@ -40,7 +65,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 bg-[#030712] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-50 bg-[#030712] flex items-center justify-center"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -49,28 +74,54 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           scale: isComplete ? 0.8 : 1
         }}
         transition={{ duration: 0.5 }}
+        className="relative"
+        style={{ width: '200px', height: '200px' }}
       >
-        <Image
-          src="/static-logo.png"
-          alt="UNSW Engineering Society Logo"
-          width={150}
-          height={150}
-          priority
-        />
-      </motion.div>
-
-      {/* Loading Bar */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-        className="w-64 h-2 bg-gray-800 rounded-full overflow-hidden"
-      >
-        <motion.div
-          className="h-full bg-white"
-          style={{ width: `${loadingProgress}%` }}
-          transition={{ duration: 0.1 }}
-        />
+        {/* SVG Circle around logo */}
+        <svg
+          width="200"
+          height="200"
+          className="absolute top-0 left-0"
+          viewBox="0 0 200 200"
+        >
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          {/* Outer circle path */}
+          <circle
+            cx="100"
+            cy="100"
+            r="90"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.2)"
+            strokeWidth="2"
+          />
+          {/* Small dot that travels around */}
+          <circle
+            ref={dotRef}
+            cx="100"
+            cy="10"
+            r="5"
+            fill="rgba(255, 255, 255, 0.9)"
+            filter="url(#glow)"
+          />
+        </svg>
+        
+        <div className="absolute top-1/2 left-1/2 z-10" style={{ transform: 'translate(calc(-50% + 5px), calc(-50% + 5px))' }}>
+          <Image
+            src="/static-logo.png"
+            alt="UNSW Engineering Society Logo"
+            width={150}
+            height={150}
+            priority
+          />
+        </div>
       </motion.div>
     </motion.div>
   );
