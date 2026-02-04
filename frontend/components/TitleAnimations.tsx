@@ -124,7 +124,7 @@ export default function TitleAnimations() {
       const readout = document.createElement('div');
       readout.style.position = 'absolute';
       Object.assign(readout.style, pos);
-      readout.style.fontFamily = 'Cormorant Garamond, serif';
+      readout.style.fontFamily = 'var(--font-inter), sans-serif';
       readout.style.fontSize = '0.7rem';
       readout.style.color = 'rgba(65, 145, 220, 0.5)';
       readout.style.letterSpacing = '1px';
@@ -133,7 +133,7 @@ export default function TitleAnimations() {
       const labels = ['SYS', 'PWR', 'NET', 'OPT'];
       readout.innerHTML = `
         <div style="margin-bottom: 4px; font-size: 0.6rem; opacity: 0.6; font-weight: 300;">${labels[idx]}</div>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-weight: 500;">
+        <div style="font-family: var(--font-inter), sans-serif; font-size: 0.75rem; font-weight: 500;">
           <span class="readout-value">${Math.floor(Math.random() * 100)}</span>%
         </div>
       `;

@@ -151,7 +151,7 @@ export default function BlueprintElement({
           <div
             ref={labelRef}
             style={{
-              fontFamily: 'Cormorant Garamond, serif',
+              fontFamily: 'var(--font-inter), sans-serif',
               fontSize: 'clamp(0.8rem, 1.8vw, 1rem)',
               fontWeight: 700,
               letterSpacing: '2px',
@@ -168,7 +168,7 @@ export default function BlueprintElement({
             <div
               ref={descRef}
               style={{
-                fontFamily: 'Cormorant Garamond, serif',
+                fontFamily: 'var(--font-inter), sans-serif',
                 fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)',
                 color: 'rgba(255, 255, 255, 0.75)',
                 lineHeight: 1.6,
@@ -182,7 +182,7 @@ export default function BlueprintElement({
           )}
           <div
             style={{
-              fontFamily: 'Cormorant Garamond, serif',
+              fontFamily: 'var(--font-inter), sans-serif',
               fontSize: 'clamp(0.65rem, 1.1vw, 0.75rem)',
               color: 'rgba(65, 145, 220, 0.9)',
               marginTop: '12px',
