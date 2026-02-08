@@ -16,14 +16,14 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Contact Info */}
           <div className="space-y-6">
-            <div className="border border-[rgba(65,145,220,0.15)] p-6 bg-[rgba(65,145,220,0.03)]">
+            <div className="border border-[rgba(65,145,220,0.3)] p-6 bg-[rgba(10,25,41,0.6)] transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)]">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-10 border border-[rgba(65,145,220,0.3)] flex items-center justify-center">
+                <div className="w-10 h-10 border border-[rgba(65,145,220,0.3)] flex items-center justify-center bg-[rgba(65,145,220,0.1)]">
                   <Mail className="w-5 h-5 text-[#4191dc]" />
                 </div>
                 <div>
                   <h3 className="text-white font-medium">Email</h3>
-                  <p className="text-sm text-[#94a3b8] font-light">General enquiries</p>
+                  <p className="text-sm text-white font-light">General enquiries</p>
                 </div>
               </div>
               <a
@@ -34,17 +34,17 @@ export default function ContactSection() {
               </a>
             </div>
 
-            <div className="border border-[rgba(65,145,220,0.15)] p-6 bg-[rgba(65,145,220,0.03)]">
+            <div className="border border-[rgba(65,145,220,0.3)] p-6 bg-[rgba(10,25,41,0.6)] transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)]">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-10 border border-[rgba(65,145,220,0.3)] flex items-center justify-center">
+                <div className="w-10 h-10 border border-[rgba(65,145,220,0.3)] flex items-center justify-center bg-[rgba(65,145,220,0.1)]">
                   <MapPin className="w-5 h-5 text-[#4191dc]" />
                 </div>
                 <div>
                   <h3 className="text-white font-medium">Location</h3>
-                  <p className="text-sm text-[#94a3b8] font-light">Find us on campus</p>
+                  <p className="text-sm text-white font-light">Find us on campus</p>
                 </div>
               </div>
-              <p className="text-[#94a3b8] text-sm font-light">
+              <p className="text-white text-sm font-light">
                 UNSW Kensington Campus<br />
                 Sydney, NSW 2052
               </p>
@@ -52,23 +52,23 @@ export default function ContactSection() {
           </div>
 
           {/* Social Links */}
-          <div className="border border-[rgba(65,145,220,0.15)] p-6 bg-[rgba(65,145,220,0.03)]">
+          <div className="border border-[rgba(65,145,220,0.3)] p-6 bg-[rgba(10,25,41,0.6)] transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)]">
             <h3 className="text-white mb-6 font-medium">Follow Us</h3>
             <div className="space-y-4">
               <a
                 href="https://instagram.com/unswengsoc"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-3 border border-[rgba(65,145,220,0.15)] hover:border-[#4191dc] hover:bg-[rgba(65,145,220,0.08)] transition-all"
+                className="flex items-center gap-4 p-3 border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.4)] hover:border-[rgba(65,145,220,0.5)] hover:bg-[rgba(10,25,41,0.8)] transition-all"
               >
                 <Instagram className="w-5 h-5 text-[#4191dc]" />
                 <span className="text-white">@unswengsoc</span>
               </a>
               <a
-                href="https://linkedin.com/company/unswengsoc"
+                href="https://www.linkedin.com/company/unsw-engineering-society"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-3 border border-[rgba(65,145,220,0.15)] hover:border-[#4191dc] hover:bg-[rgba(65,145,220,0.08)] transition-all"
+                className="flex items-center gap-4 p-3 border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.4)] hover:border-[rgba(65,145,220,0.5)] hover:bg-[rgba(10,25,41,0.8)] transition-all"
               >
                 <Linkedin className="w-5 h-5 text-[#4191dc]" />
                 <span className="text-white">UNSW Engineering Society</span>
@@ -77,7 +77,7 @@ export default function ContactSection() {
                 href="https://facebook.com/unswengsoc"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-3 border border-[rgba(65,145,220,0.15)] hover:border-[#4191dc] hover:bg-[rgba(65,145,220,0.08)] transition-all"
+                className="flex items-center gap-4 p-3 border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.4)] hover:border-[rgba(65,145,220,0.5)] hover:bg-[rgba(10,25,41,0.8)] transition-all"
               >
                 <Facebook className="w-5 h-5 text-[#4191dc]" />
                 <span className="text-white">UNSW EngSoc</span>

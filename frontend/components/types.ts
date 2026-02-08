@@ -35,6 +35,7 @@ export interface Event {
   title: string;
   date: string;
   description: string;
+  image?: string;
 }
 
 export interface Sponsor {
@@ -53,4 +54,5 @@ export interface Program {
   title: string;
   description: string;
   status: 'open' | 'coming-soon' | 'closed';
+  image?: string;
 }

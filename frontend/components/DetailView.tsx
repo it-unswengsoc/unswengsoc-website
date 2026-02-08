@@ -68,7 +68,6 @@ function SectionBackground({ section }: { section: Section }) {
 
   const config = spriteConfigs[section];
 
-  // For sprite-based sections
   if (config) {
     return (
       <AnimatedSprite
