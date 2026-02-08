@@ -55,9 +55,9 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
   const bp = 25;
   const frameSize = 280;
   const hexSizes = [50, 90, 130, 170, 210];
-  const strokeColor = 'rgba(255,255,255,0.3)';
-  const strokeColorDim = 'rgba(255,255,255,0.18)';
-  const strokeColorBright = 'rgba(255,255,255,0.24)';
+  const strokeColor = 'rgba(65, 145, 220, 0.4)';
+  const strokeColorDim = 'rgba(65, 145, 220, 0.25)';
+  const strokeColorBright = 'rgba(65, 145, 220, 0.35)';
 
   // Connection line directions
   const directions = [
@@ -452,29 +452,29 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
       {/* Text annotations layer */}
       <div ref={annotationsRef} className="fixed inset-0 hidden md:block" style={{ opacity: animateIn ? 0 : 1 }}>
         {/* Top-left title block */}
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 58, fontSize: 12, opacity: 0.8 }}>SCHEMATIC</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 76, fontSize: 9, opacity: 0.8 }}>REV. 2.4.1</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 93, fontSize: 8, opacity: 0.8 }}>DWG NO.</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 93, fontSize: 8, opacity: 0.8 }}>A-7742-01</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 110, fontSize: 8, opacity: 0.8 }}>SCALE</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 110, fontSize: 8, opacity: 0.8 }}>1:100</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 127, fontSize: 8, opacity: 0.8 }}>DATE</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 127, fontSize: 8, opacity: 0.8 }}>01.29.26</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 58, fontSize: 12 }}>SCHEMATIC</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 76, fontSize: 9 }}>REV. 2.4.1</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 93, fontSize: 8 }}>DWG NO.</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 93, fontSize: 8 }}>A-7742-01</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 110, fontSize: 8 }}>SCALE</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 110, fontSize: 8 }}>1:100</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 10, top: 127, fontSize: 8 }}>DATE</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX + 60, top: 127, fontSize: 8 }}>01.29.26</div>
 
         {/* Top-right title block */}
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 58, fontSize: 12, opacity: 0.8 }}>SYSTEM</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 76, fontSize: 9, opacity: 0.8 }}>CORE MODULE</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 93, fontSize: 8, opacity: 0.8 }}>SHEET</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 93, fontSize: 8, opacity: 0.8 }}>1 OF 12</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 110, fontSize: 8, opacity: 0.8 }}>ZONE</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 110, fontSize: 8, opacity: 0.8 }}>A-4</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 127, fontSize: 8, opacity: 0.8 }}>APPROVED</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 127, fontSize: 8, opacity: 0.8 }}>J.DOE</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 58, fontSize: 12 }}>SYSTEM</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 76, fontSize: 9 }}>CORE MODULE</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 93, fontSize: 8 }}>SHEET</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 93, fontSize: 8 }}>1 OF 12</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 110, fontSize: 8 }}>ZONE</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 110, fontSize: 8 }}>A-4</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 170, top: 127, fontSize: 8 }}>APPROVED</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 110, top: 127, fontSize: 8 }}>J.DOE</div>
 
         {/* Component list */}
-        <div className="blueprint-annotation" style={{ left: leftPanelX, top: compListY - 12, fontSize: 10, opacity: 0.7 }}>COMPONENT LIST</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: compListY - 12, fontSize: 10 }}>COMPONENT LIST</div>
         {components.map((comp, i) => (
-          <div key={`comp-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: compListY + 13 + i * 22, fontSize: 7, opacity: 0.7 }}>
+          <div key={`comp-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: compListY + 13 + i * 22, fontSize: 7 }}>
             <span style={{ display: 'inline-block', width: 32 }}>{comp.id}</span>
             <span style={{ display: 'inline-block', width: 62 }}>{comp.name}</span>
             <span>{comp.val}</span>
@@ -482,48 +482,48 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
         ))}
 
         {/* Dimensions */}
-        <div className="blueprint-annotation" style={{ left: leftPanelX, top: dimY - 12, fontSize: 10, opacity: 0.6 }}>DIMENSIONS (mm)</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: dimY - 12, fontSize: 10 }}>DIMENSIONS (mm)</div>
 
         {/* Notes */}
-        <div className="blueprint-annotation" style={{ left: leftPanelX, top: notesY - 12, fontSize: 10, opacity: 0.6 }}>NOTES:</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: notesY - 12, fontSize: 10 }}>NOTES:</div>
         {notes.map((note, i) => (
-          <div key={`note-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: notesY + 8 + i * 16, fontSize: 7, opacity: 0.6 }}>{note}</div>
+          <div key={`note-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: notesY + 8 + i * 16, fontSize: 7 }}>{note}</div>
         ))}
 
         {/* Specifications */}
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: specY - 12, fontSize: 10, opacity: 0.7 }}>SPECIFICATIONS</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: specY - 12, fontSize: 10 }}>SPECIFICATIONS</div>
         {specs.map((spec, i) => (
-          <div key={`spec-${i}`} className="blueprint-annotation" style={{ left: rightPanelX - 150, top: specY + 13 + i * 22, fontSize: 7, opacity: 0.7 }}>
+          <div key={`spec-${i}`} className="blueprint-annotation" style={{ left: rightPanelX - 150, top: specY + 13 + i * 22, fontSize: 7 }}>
             <span style={{ display: 'inline-block', width: 70 }}>{spec.label}</span>
             <span style={{ fontSize: 8 }}>{spec.value}</span>
           </div>
         ))}
 
         {/* Reference designators */}
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: refY - 12, fontSize: 10, opacity: 0.7 }}>REF DESIGNATORS</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: refY - 12, fontSize: 10 }}>REF DESIGNATORS</div>
         {refs.map((r, i) => (
           <div key={`ref-${i}`} className="blueprint-annotation" style={{
             left: rightPanelX - 150 + (i % 3) * 50 + 2,
             top: refY + 13 + Math.floor(i / 3) * 30,
-            fontSize: 8, opacity: 0.7,
+            fontSize: 8,
           }}>{r}</div>
         ))}
 
         {/* Coordinates */}
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: coordY - 12, fontSize: 10, opacity: 0.7 }}>COORDINATES</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 + 55, top: coordY + 38 - 4, fontSize: 8, opacity: 0.8 }}>X</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 - 3, top: coordY + 50 - 55 - 8, fontSize: 8, opacity: 0.8 }}>Y</div>
-        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 - 5, top: coordY + 50 + 5, fontSize: 7, opacity: 0.7 }}>ORIGIN: 0,0,0</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 150, top: coordY - 12, fontSize: 10 }}>COORDINATES</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 + 55, top: coordY + 38 - 4, fontSize: 8 }}>X</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 - 3, top: coordY + 50 - 55 - 8, fontSize: 8 }}>Y</div>
+        <div className="blueprint-annotation" style={{ left: rightPanelX - 100 - 5, top: coordY + 50 + 5, fontSize: 7 }}>ORIGIN: 0,0,0</div>
 
         {/* Revision history */}
-        <div className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY - 12, fontSize: 10, opacity: 0.7 }}>REVISION HISTORY</div>
-        <div className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY + 8, fontSize: 7, opacity: 0.7 }}>
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY - 12, fontSize: 10 }}>REVISION HISTORY</div>
+        <div className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY + 8, fontSize: 7 }}>
           <span style={{ display: 'inline-block', width: 28 }}>REV</span>
           <span style={{ display: 'inline-block', width: 58 }}>DATE</span>
           <span>DESCRIPTION</span>
         </div>
         {revisions.map((rev, i) => (
-          <div key={`rev-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY + 28 + i * 18, fontSize: 7, opacity: 0.7 }}>
+          <div key={`rev-${i}`} className="blueprint-annotation" style={{ left: leftPanelX, top: revTableY + 28 + i * 18, fontSize: 7 }}>
             <span style={{ display: 'inline-block', width: 28 }}>{rev.rev}</span>
             <span style={{ display: 'inline-block', width: 58 }}>{rev.date}</span>
             <span>{rev.desc}</span>
@@ -531,51 +531,51 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
         ))}
 
         {/* Approvals */}
-        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY - 12, fontSize: 10, opacity: 0.7 }}>APPROVALS</div>
-        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 13, fontSize: 7, opacity: 0.7 }}>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY - 12, fontSize: 10 }}>APPROVALS</div>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 13, fontSize: 7 }}>
           <span style={{ display: 'inline-block', width: 58 }}>DRAWN</span>
-          <span style={{ display: 'inline-block', width: 68 }}>J. SMITH</span>
+          <span style={{ display: 'inline-block', width: 68 }}>W. MOY</span>
           <span>01.10.26</span>
         </div>
-        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 31, fontSize: 7, opacity: 0.7 }}>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 31, fontSize: 7 }}>
           <span style={{ display: 'inline-block', width: 58 }}>CHECKED</span>
-          <span style={{ display: 'inline-block', width: 68 }}>M. JONES</span>
+          <span style={{ display: 'inline-block', width: 68 }}>Z. ABRAN</span>
           <span>01.15.26</span>
         </div>
-        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 49, fontSize: 7, opacity: 0.7 }}>
+        <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 49, fontSize: 7 }}>
           <span style={{ display: 'inline-block', width: 58 }}>APPROVED</span>
-          <span style={{ display: 'inline-block', width: 68 }}>R. DAVIS</span>
+          <span style={{ display: 'inline-block', width: 68 }}>N. HUYNN</span>
           <span>01.20.26</span>
         </div>
 
         {/* Zone markers - top/bottom */}
         {zones.map((zone, i) => (
           <div key={`zone-top-${i}`}>
-            <div className="blueprint-annotation" style={{ left: 50 + zoneSpacing * i + zoneSpacing / 2 - 4, top: 28, fontSize: 10, opacity: 0.5 }}>{zone}</div>
-            <div className="blueprint-annotation" style={{ left: 50 + zoneSpacing * i + zoneSpacing / 2 - 4, top: height - 44, fontSize: 10, opacity: 0.5 }}>{zone}</div>
+            <div className="blueprint-annotation" style={{ left: 50 + zoneSpacing * i + zoneSpacing / 2 - 4, top: 28, fontSize: 10 }}>{zone}</div>
+            <div className="blueprint-annotation" style={{ left: 50 + zoneSpacing * i + zoneSpacing / 2 - 4, top: height - 44, fontSize: 10 }}>{zone}</div>
           </div>
         ))}
 
         {/* Zone markers - left/right */}
         {numZones.map((num, i) => (
           <div key={`zone-num-${i}`}>
-            <div className="blueprint-annotation" style={{ left: 28, top: 50 + numSpacing * i + numSpacing / 2 - 6, fontSize: 10, opacity: 0.5 }}>{num}</div>
-            <div className="blueprint-annotation" style={{ left: width - 44, top: 50 + numSpacing * i + numSpacing / 2 - 6, fontSize: 10, opacity: 0.5 }}>{num}</div>
+            <div className="blueprint-annotation" style={{ left: 28, top: 50 + numSpacing * i + numSpacing / 2 - 6, fontSize: 10 }}>{num}</div>
+            <div className="blueprint-annotation" style={{ left: width - 44, top: 50 + numSpacing * i + numSpacing / 2 - 6, fontSize: 10 }}>{num}</div>
           </div>
         ))}
 
         {/* Callout text */}
         {callouts.map((c, i) => (
           <div key={`callout-text-${i}`}>
-            <div className="blueprint-annotation" style={{ left: c.ex + 5, top: c.ey - 12, fontSize: 8, opacity: 0.6 }}>{c.title}</div>
-            <div className="blueprint-annotation" style={{ left: c.ex + 5, top: c.ey, fontSize: 7, opacity: 0.6 }}>{c.desc}</div>
+            <div className="blueprint-annotation" style={{ left: c.ex + 5, top: c.ey - 12, fontSize: 8 }}>{c.title}</div>
+            <div className="blueprint-annotation" style={{ left: c.ex + 5, top: c.ey, fontSize: 7 }}>{c.desc}</div>
           </div>
         ))}
 
         {/* Scattered marker numbers */}
         {markers.map((m, i) => (
           <div key={`marker-text-${i}`} className="blueprint-annotation"
-            style={{ left: m.x - 4, top: m.y - 5, fontSize: 7, opacity: 0.4 }}>{m.num}</div>
+            style={{ left: m.x - 4, top: m.y - 5, fontSize: 7 }}>{m.num}</div>
         ))}
       </div>
     </div>

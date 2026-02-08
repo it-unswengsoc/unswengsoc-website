@@ -31,12 +31,10 @@ function TitleScreen({ onOpenBlueprint }: { onOpenBlueprint: () => void }) {
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
         <h1 className="main-title text-center">UNSW ENGINEERING SOCIETY</h1>
         <p className="subtitle mb-8 text-center">
-          <span className="subtitle-bracket">[</span>
           Innovate. Create. Engineer.
-          <span className="subtitle-bracket">]</span>
         </p>
         <button onClick={onOpenBlueprint} className="open-blueprint-btn">
-          [ Open Blueprint ]
+          Open Blueprint
         </button>
       </div>
     </motion.div>

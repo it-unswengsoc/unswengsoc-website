@@ -4,6 +4,23 @@ import { ReactNode, useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 
+interface CornerOffset {
+  x: number;
+  y: number;
+}
+
+interface CornerOffsets {
+  topLeft?: number | CornerOffset;
+  topRight?: number | CornerOffset;
+  bottomLeft?: number | CornerOffset;
+  bottomRight?: number | CornerOffset;
+}
+
+interface TooltipOffset {
+  x?: number;
+  y?: number;
+}
+
 interface BlueprintElementProps {
   id: string;
   label: string;
@@ -15,6 +32,9 @@ interface BlueprintElementProps {
   animationDelay?: number;
   className?: string;
   disableEntrance?: boolean;
+  cornerOffset?: number;
+  cornerOffsets?: CornerOffsets;
+  tooltipOffset?: TooltipOffset;
 }
 
 export default function BlueprintElement({
@@ -28,7 +48,24 @@ export default function BlueprintElement({
   animationDelay = 0,
   className = '',
   disableEntrance = false,
+  cornerOffset = -1,
+  cornerOffsets,
+  tooltipOffset,
 }: BlueprintElementProps) {
+  // Helper to parse corner offset (number or {x, y} object)
+  const parseOffset = (val: number | CornerOffset | undefined, fallback: number): { x: number; y: number } => {
+    if (val === undefined) return { x: fallback, y: fallback };
+    if (typeof val === 'number') return { x: val, y: val };
+    return val;
+  };
+
+  // Individual corner offsets, falling back to cornerOffset
+  const offsets = {
+    topLeft: parseOffset(cornerOffsets?.topLeft, cornerOffset),
+    topRight: parseOffset(cornerOffsets?.topRight, cornerOffset),
+    bottomLeft: parseOffset(cornerOffsets?.bottomLeft, cornerOffset),
+    bottomRight: parseOffset(cornerOffsets?.bottomRight, cornerOffset),
+  };
   const [isHovered, setIsHovered] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
@@ -110,22 +147,25 @@ export default function BlueprintElement({
       border: '1px solid rgba(65, 145, 220, 0.4)',
       borderRadius: '4px',
       backdropFilter: 'blur(12px)',
-      zIndex: 100,
+      zIndex: 1000,
       pointerEvents: 'none',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(65, 145, 220, 0.1) inset',
       maxWidth: '240px',
       minWidth: '180px',
     };
 
+    const xOff = tooltipOffset?.x ?? 0;
+    const yOff = tooltipOffset?.y ?? 0;
+
     switch (labelPosition) {
       case 'top':
-        return { ...base, bottom: 'calc(100% + 25px)', left: '50%', transform: 'translateX(-50%)' };
+        return { ...base, bottom: `calc(100% + 25px + ${yOff}px)`, left: `calc(50% + ${xOff}px)`, transform: 'translateX(-50%)' };
       case 'bottom':
-        return { ...base, top: 'calc(100% + 25px)', left: '50%', transform: 'translateX(-50%)' };
+        return { ...base, top: `calc(100% + 25px + ${yOff}px)`, left: `calc(50% + ${xOff}px)`, transform: 'translateX(-50%)' };
       case 'left':
-        return { ...base, right: 'calc(100% + 25px)', top: '50%', transform: 'translateY(-50%)' };
+        return { ...base, right: `calc(100% + 25px + ${xOff}px)`, top: `calc(50% + ${yOff}px)`, transform: 'translateY(-50%)' };
       case 'right':
-        return { ...base, left: 'calc(100% + 25px)', top: '50%', transform: 'translateY(-50%)' };
+        return { ...base, left: `calc(100% + 15px + ${xOff}px)`, top: `calc(50% + ${yOff}px)`, transform: 'translateY(-50%)' };
       default:
         return base;
     }
@@ -168,13 +208,13 @@ export default function BlueprintElement({
             <div
               ref={descRef}
               style={{
-                fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)',
+                fontFamily: "'Courier New', monospace",
+                fontSize: 'clamp(0.6rem, 1.2vw, 0.7rem)',
                 color: 'rgba(255, 255, 255, 0.75)',
-                lineHeight: 1.6,
+                lineHeight: 1.5,
                 opacity: 0,
                 transform: 'translateY(-5px)',
-                fontWeight: 300,
+                fontWeight: 400,
               }}
             >
               {description}
@@ -182,11 +222,11 @@ export default function BlueprintElement({
           )}
           <div
             style={{
-              fontFamily: 'var(--font-inter), sans-serif',
-              fontSize: 'clamp(0.65rem, 1.1vw, 0.75rem)',
+              fontFamily: "'Courier New', monospace",
+              fontSize: 'clamp(0.55rem, 1vw, 0.65rem)',
               color: 'rgba(65, 145, 220, 0.9)',
-              marginTop: '12px',
-              paddingTop: '10px',
+              marginTop: '10px',
+              paddingTop: '8px',
               borderTop: '1px solid rgba(65, 145, 220, 0.15)',
               letterSpacing: '1px',
               fontWeight: 500,
@@ -217,8 +257,8 @@ export default function BlueprintElement({
         <>
           <div style={{
             position: 'absolute',
-            top: -1,
-            left: -1,
+            top: offsets.topLeft.y,
+            left: offsets.topLeft.x,
             width: '16px',
             height: '16px',
             borderTop: '1.5px solid rgba(65, 145, 220, 0.6)',
@@ -226,8 +266,8 @@ export default function BlueprintElement({
           }} />
           <div style={{
             position: 'absolute',
-            top: -1,
-            right: -1,
+            top: offsets.topRight.y,
+            right: offsets.topRight.x,
             width: '16px',
             height: '16px',
             borderTop: '1.5px solid rgba(65, 145, 220, 0.6)',
@@ -235,8 +275,8 @@ export default function BlueprintElement({
           }} />
           <div style={{
             position: 'absolute',
-            bottom: -1,
-            left: -1,
+            bottom: offsets.bottomLeft.y,
+            left: offsets.bottomLeft.x,
             width: '16px',
             height: '16px',
             borderBottom: '1.5px solid rgba(65, 145, 220, 0.6)',
@@ -244,8 +284,8 @@ export default function BlueprintElement({
           }} />
           <div style={{
             position: 'absolute',
-            bottom: -1,
-            right: -1,
+            bottom: offsets.bottomRight.y,
+            right: offsets.bottomRight.x,
             width: '16px',
             height: '16px',
             borderBottom: '1.5px solid rgba(65, 145, 220, 0.6)',
@@ -262,7 +302,7 @@ export default function BlueprintElement({
         ref={elementRef}
         data-element={id}
         className={`blueprint-element ${className}`}
-        style={{ ...style, opacity: 0, transition: 'transform 0.4s ease' }}
+        style={{ ...style, opacity: 0, transition: 'transform 0.4s ease', zIndex: isHovered ? 50 : 'auto' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={onClick}
@@ -277,7 +317,7 @@ export default function BlueprintElement({
       ref={elementRef}
       data-element={id}
       className={`blueprint-element ${className}`}
-      style={style}
+      style={{ ...style, zIndex: isHovered ? 50 : 'auto' }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: animationDelay, ease: 'easeOut' }}

@@ -246,10 +246,9 @@ body {
   font-family: var(--font-inter), sans-serif;
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   margin-bottom: 8px;
   color: white;
-  text-shadow: 0 0 30px rgba(65, 145, 220, 0.5), 0 0 60px rgba(65, 145, 220, 0.2);
   text-transform: uppercase;
 }
 
@@ -268,7 +267,7 @@ body {
 
 /* Animated Sprite */
 .animated-sprite {
-  filter: brightness(0) invert(1) opacity(0.5);
+  filter: brightness(0) invert(1) opacity(0.4);
   transition: filter 1s ease;
 }
 
@@ -300,7 +299,7 @@ body {
 
 /* Open Blueprint button */
 .open-blueprint-btn {
-  font-family: var(--font-inter), sans-serif;
+  font-family: 'Courier New', monospace;
   border: 2px solid rgba(65, 145, 220, 0.5);
   padding: 0.85rem 2.5rem;
   font-size: clamp(0.8rem, 2vw, 1rem);
@@ -329,8 +328,8 @@ body {
 /* Blueprint text annotations */
 .blueprint-annotation {
   position: absolute;
-  font-family: var(--font-inter), sans-serif;
-  color: white;
+  font-family: 'Courier New', monospace;
+  color: rgba(65, 145, 220, 0.5);
   pointer-events: none;
   font-weight: 500;
 }

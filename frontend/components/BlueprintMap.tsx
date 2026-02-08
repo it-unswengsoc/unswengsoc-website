@@ -68,7 +68,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         description="Discover our networking events, workshops, and social activities"
         style={{
           position: 'absolute',
-          left: '18%',
+          left: '16%',
           top: '12%',
           width: 'clamp(80px, 15vw, 120px)',
           height: 'clamp(100px, 20vw, 160px)',
@@ -77,6 +77,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         onClick={() => onSectionClick('events')}
         animationDelay={0}
         disableEntrance={disableEntrance}
+        cornerOffset={-40}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -100,7 +101,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         style={{
           position: 'absolute',
           left: '15%',
-          top: '62%',
+          top: '60%',
           width: 'clamp(120px, 20vw, 300px)',
           height: 'clamp(120px, 20vw, 300px)',
         }}
@@ -108,6 +109,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         onClick={() => onSectionClick('sponsors')}
         animationDelay={0.2}
         disableEntrance={disableEntrance}
+        cornerOffset={20}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -118,7 +120,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
             rows={HELMET_SPRITE_CONFIG.rows}
             totalFrames={HELMET_SPRITE_CONFIG.totalFrames}
             isHovered={isHovered}
-            displaySize={200}
+            displaySize={220}
           />
         )}
       </BlueprintElement>
@@ -139,10 +141,16 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
             width: 'clamp(200px, 30vw, 400px)',
             height: 'clamp(200px, 30vw, 400px)',
           }}
-          labelPosition="right"
+          labelPosition="left"
           onClick={() => onSectionClick('about')}
           animationDelay={0.4}
           disableEntrance={disableEntrance}
+          cornerOffsets={{
+            topLeft: 1,
+            topRight: { x: 30, y: 1 },
+            bottomLeft: { x: 1, y: 25 },
+            bottomRight: { x: 30, y: 25 },
+          }}
         >
           {(isHovered) => (
             <AnimatedSprite
@@ -166,7 +174,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         description="Explore mentorship, career development, and student programs"
         style={{
           position: 'absolute',
-          right: '18%',
+          right: '15%',
           top: '15%',
           width: 'clamp(100px, 15vw, 200px)',
           height: 'clamp(100px, 15vw, 200px)',
@@ -175,6 +183,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         onClick={() => onSectionClick('programs')}
         animationDelay={0.6}
         disableEntrance={disableEntrance}
+        cornerOffset={-1}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -206,6 +215,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         onClick={() => onSectionClick('jobs')}
         animationDelay={0.8}
         disableEntrance={disableEntrance}
+        cornerOffset={-65}
       >
         {(isHovered) => (
           <AnimatedSprite

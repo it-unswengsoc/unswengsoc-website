@@ -1,183 +1,63 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
-interface Director {
+interface Executive {
   name: string;
   role: string;
+  initials: string;
+  image?: string;
 }
 
-interface Subteam {
-  name: string;
-  description: string;
-  directors: Director[];
-}
-
-const subteams: Subteam[] = [
-  {
-    name: 'Cabinet',
-    description: 'Leading the society and overseeing all operations',
-    directors: [
-      { name: 'Alex Lum', role: 'President' },
-      { name: 'Jenny Tang', role: 'Secretary' },
-      { name: 'Isabella Tsui', role: 'Treasurer' },
-      { name: 'Jenny Liu', role: 'Arc Delegate' },
-    ],
-  },
-  {
-    name: 'Careers',
-    description: 'Connecting students with industry opportunities',
-    directors: [
-      { name: 'Mark Chen', role: 'Vice President Careers' },
-      { name: 'Anna Chen', role: 'Careers Officer' },
-    ],
-  },
-  {
-    name: 'HR',
-    description: 'Supporting our team and fostering culture',
-    directors: [
-      { name: 'Jessica Nguyen', role: 'HR Director' },
-      { name: 'Tom Wilson', role: 'HR Officer' },
-    ],
-  },
-  {
-    name: 'IT',
-    description: 'Building and maintaining our digital presence',
-    directors: [
-      { name: 'Rachel Thompson', role: 'IT Director' },
-      { name: 'Kevin Zhang', role: 'IT Officer' },
-    ],
-  },
-  {
-    name: 'Marketing',
-    description: 'Promoting events and growing our community',
-    directors: [
-      { name: 'Sophie Lee', role: 'Marketing Director' },
-      { name: 'Daniel Kim', role: 'Marketing Officer' },
-    ],
-  },
-  {
-    name: 'Programs',
-    description: 'Running mentorship and development initiatives',
-    directors: [
-      { name: 'David Kumar', role: 'Programs Director' },
-      { name: 'Lisa Wang', role: 'Programs Officer' },
-    ],
-  },
-  {
-    name: 'Publications',
-    description: 'Creating content and managing communications',
-    directors: [
-      { name: 'Emma Brown', role: 'Publications Director' },
-      { name: 'Ryan Patel', role: 'Publications Officer' },
-    ],
-  },
-  {
-    name: 'Socials',
-    description: 'Organising social events and building connections',
-    directors: [
-      { name: 'Chris Taylor', role: 'Socials Director' },
-      { name: 'Mia Johnson', role: 'Socials Officer' },
-    ],
-  },
-  {
-    name: 'Sponsorships',
-    description: 'Building partnerships with industry leaders',
-    directors: [
-      { name: 'Nathan Lee', role: 'Sponsorships Director' },
-      { name: 'Olivia Chen', role: 'Sponsorships Officer' },
-    ],
-  },
+const executives: Executive[] = [
+  { name: 'Alex Lum', role: 'President', initials: 'AL', image: '/team/alex.jpg' },
+  { name: 'Jenny Tang', role: 'Secretary', initials: 'JT', image: '/team/jenny-tang.jpg' },
+  { name: 'Isabella Tsui', role: 'Treasurer', initials: 'IT', image: '/team/isabella.jpg' },
+  { name: 'Jenny Liu', role: 'Arc Delegate', initials: 'JL', image: '/team/jenny-liu.jpg' },
+  { name: 'Alicia Ong', role: 'Vice President Marketing', initials: 'AO', image: '/team/alica.jpg' },
+  { name: 'Zachary Abran', role: 'Vice President IT', initials: 'ZA', image: '/team/zac.jpg' },
+  { name: 'Mark Chen', role: 'Vice President Careers', initials: 'MC', image: '/team/mark.jpg' },
+  { name: 'Riwaz Bhattachan ', role: 'Vice President Publications ', initials: 'RB', image: '/team/riwaz.jpg' },
+  { name: 'Jesse Vella', role: 'Vice President Sponsorships', initials: 'JV', image: '/team/jesse.jpg' },
+  { name: 'Sameen Jubayed', role: 'Vice President Programs', initials: 'SJ', image: '/team/sameen.jpg' },
+  { name: 'Sean Wang', role: 'Vice President Socials', initials: 'SW', image: '/team/sean.jpg' }
 ];
 
 export default function TeamSection() {
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
-
-  const selectedSubteam = subteams.find((t) => t.name === selectedTeam);
-
   return (
-    <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-[rgba(65,145,220,0.15)]">
-      <h3 className="text-xs md:text-sm text-[#4191dc] mb-3 md:mb-4 font-light">Our Team</h3>
-      <p className="text-[#94a3b8] text-sm md:text-base leading-relaxed mb-4 md:mb-6">
-        Meet the dedicated subteams who work tirelessly to create memorable experiences
-        and opportunities for our engineering community.
+    <div className="mt-6 md:mt-8 pt-6 md:pt-8">
+      <h3 className="text-2xl md:text-2xl text-[#4191dc] mb-3 md:mb-4 font-bold">Our Executive Team</h3>
+      <p className="text-white text-sm md:text-base leading-relaxed mb-4 md:mb-6 font-light">
+        Meet the executive team leading UNSW Engineering Society in 2026.
       </p>
 
-      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-        {/* Subteams grid */}
-        <div className={cn(
-          'grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 transition-all duration-300',
-          selectedTeam ? 'md:w-1/2' : 'w-full'
-        )}>
-          {subteams.map((team) => (
-            <button
-              key={team.name}
-              onClick={() => setSelectedTeam(selectedTeam === team.name ? null : team.name)}
-              className={cn(
-                'border p-3 md:p-4 text-left transition-all duration-200',
-                selectedTeam === team.name
-                  ? 'border-[#4191dc] bg-[rgba(65,145,220,0.15)]'
-                  : 'border-[rgba(65,145,220,0.15)] bg-[rgba(65,145,220,0.03)] hover:bg-[rgba(65,145,220,0.08)] hover:border-[rgba(65,145,220,0.3)]'
-              )}
-            >
-              <h4 className="text-white text-xs md:text-sm font-medium">{team.name}</h4>
-              <p className="text-xs text-[#94a3b8] mt-1 line-clamp-2 font-light">
-                {team.description}
-              </p>
-            </button>
-          ))}
-        </div>
-
-        {/* Directors panel */}
-        <AnimatePresence>
-          {selectedTeam && selectedSubteam && (
-            <motion.div
-              initial={{ opacity: 0, x: 20, width: 0 }}
-              animate={{ opacity: 1, x: 0, width: '100%' }}
-              exit={{ opacity: 0, x: 20, width: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden md:w-1/2"
-            >
-              <div className="border border-[#4191dc] bg-[rgba(65,145,220,0.05)] p-3 md:p-4 h-full">
-                <div className="flex justify-between items-start mb-3 md:mb-4">
-                  <div>
-                    <h4 className="text-white text-sm md:text-base font-medium">{selectedSubteam.name}</h4>
-                    <p className="text-xs text-[#94a3b8] mt-1 font-light">
-                      {selectedSubteam.description}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setSelectedTeam(null)}
-                    className="text-[#94a3b8] hover:text-white transition-colors text-sm ml-2"
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <div className="space-y-2 md:space-y-3 mt-3 md:mt-4">
-                  {selectedSubteam.directors.map((director) => (
-                    <div
-                      key={director.name}
-                      className="flex items-center gap-2 md:gap-3 border border-[rgba(65,145,220,0.15)] p-2 md:p-3 bg-[rgba(65,145,220,0.03)]"
-                    >
-                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[rgba(65,145,220,0.1)] border border-[rgba(65,145,220,0.15)] flex items-center justify-center flex-shrink-0">
-                        <span className="text-xs text-[#4191dc] font-light">
-                          {director.name.split(' ').map((n) => n[0]).join('')}
-                        </span>
-                      </div>
-                      <div>
-                        <h5 className="text-white text-xs md:text-sm font-medium">{director.name}</h5>
-                        <p className="text-xs text-[#94a3b8] font-light">{director.role}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+        {executives.map((exec) => (
+          <div
+            key={exec.name}
+            className="border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.6)] p-4 md:p-6 flex flex-col items-center text-center transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)]"
+          >
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[rgba(65,145,220,0.1)] border-2 border-[rgba(65,145,220,0.3)] flex items-center justify-center mb-4 overflow-hidden relative">
+              {exec.image ? (
+                <Image
+                  src={exec.image}
+                  alt={exec.name}
+                  fill
+                  className="object-cover"
+                  onError={(e) => {
+                    // Hide the image on error, fallback to initials
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              ) : null}
+              <span className="text-2xl md:text-3xl text-[#4191dc] font-medium">
+                {exec.initials}
+              </span>
+            </div>
+            <h4 className="text-white text-sm md:text-base font-medium">{exec.name}</h4>
+            <p className="text-xs md:text-sm text-[#4191dc] mt-1 font-light">{exec.role}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
