@@ -209,12 +209,12 @@ export default function BlueprintElement({
               ref={descRef}
               style={{
                 fontFamily: "'Courier New', monospace",
-                fontSize: 'clamp(0.6rem, 1.2vw, 0.7rem)',
+                fontSize: 'clamp(0.8rem, 1.5vw, 0.8rem)',
                 color: 'rgba(255, 255, 255, 0.75)',
                 lineHeight: 1.5,
                 opacity: 0,
                 transform: 'translateY(-5px)',
-                fontWeight: 400,
+                fontWeight: 700,
               }}
             >
               {description}
@@ -229,7 +229,7 @@ export default function BlueprintElement({
               paddingTop: '8px',
               borderTop: '1px solid rgba(65, 145, 220, 0.15)',
               letterSpacing: '1px',
-              fontWeight: 500,
+              fontWeight: 900,
             }}
           >
             Click to explore →
