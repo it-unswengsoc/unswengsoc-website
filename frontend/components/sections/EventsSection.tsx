@@ -39,7 +39,7 @@ export default function EventsSection() {
         {events.map((event) => (
           <div
             key={event.title}
-            className="border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.6)] overflow-hidden transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)]"
+            className="border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.6)] overflow-hidden transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)] hover:scale-103"
           >
             {/* Event Image */}
             <div className="relative w-full aspect-[4/3] bg-[rgba(65,145,220,0.1)]">
@@ -59,10 +59,10 @@ export default function EventsSection() {
               )}
             </div>
             {/* Event Details */}
-            <div className="p-4">
-              <span className="text-xs text-[#4191dc] font-light">{event.date}</span>
+            <div className="p-5">
+              <span className="text-sm text-[#4191dc] font-medium">{event.date}</span>
               <h3 className="text-white font-medium mt-1 mb-2">{event.title}</h3>
-              <p className="text-sm text-white font-light">{event.description}</p>
+              <p className="text-m text-white font-light">{event.description}</p>
             </div>
           </div>
         ))}

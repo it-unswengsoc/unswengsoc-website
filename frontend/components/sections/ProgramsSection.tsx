@@ -40,7 +40,7 @@ export default function ProgramsSection() {
         {programs.map((program) => (
           <div
             key={program.title}
-            className="border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.6)] overflow-hidden transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)]"
+            className="border border-[rgba(65,145,220,0.3)] bg-[rgba(10,25,41,0.6)] overflow-hidden transition-all duration-200 hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)] hover:scale-103"
           >
             {/* Program Image */}
             <div className="relative w-full aspect-[4/3] bg-[rgba(65,145,220,0.1)]">
