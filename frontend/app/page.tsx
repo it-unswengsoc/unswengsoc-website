@@ -10,6 +10,7 @@ import DetailView from '@/components/DetailView';
 import LoadingScreen from '@/components/LoadingScreen';
 import ContactSection from '@/components/ContactSection';
 import TitleAnimations from '@/components/TitleAnimations';
+import TrueFocus from '@/components/TrueFocus';
 import { Section, Screen } from '@/components/types';
 import { sectionDetails } from '@/components/sectionData';
 
@@ -29,10 +30,18 @@ function TitleScreen({ onOpenBlueprint }: { onOpenBlueprint: () => void }) {
       </div>
 
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-        <h1 className="main-title text-center">UNSW ENGINEERING SOCIETY</h1>
-        <p className="subtitle mb-8 text-center">
-          Innovate. Create. Engineer.
-        </p>
+        <div className="mb-8">
+          <TrueFocus
+            sentence="UNSW ENGINEERING SOCIETY"
+            manualMode={false}
+            blurAmount={5}
+            borderColor="#4191dc"
+            glowColor="rgba(65, 145, 220, 0.6)"
+            animationDuration={0.5}
+            pauseBetweenAnimations={1.5}
+          />
+        </div>
+        <p className="subtitle mb-8 text-center">Innovate. Create. Engineer.</p>
         <button onClick={onOpenBlueprint} className="open-blueprint-btn">
           Open Blueprint
         </button>
@@ -114,9 +123,14 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="min-h-screen h-screen text-white overflow-hidden relative" style={{ background: 'var(--background)' }}>
+    <div
+      className="min-h-screen h-screen text-white overflow-hidden relative"
+      style={{ background: 'var(--background)' }}
+    >
       <AnimatePresence>
-        {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
+        {isLoading && (
+          <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
+        )}
       </AnimatePresence>
 
       <Navbar
