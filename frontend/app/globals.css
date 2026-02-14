@@ -334,3 +334,24 @@ body {
   font-weight: 500;
 }
 
+/* True Focus text animation */
+.true-focus-word {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .true-focus-word {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .true-focus-word {
+    font-size: 1.5rem !important;
+    letter-spacing: 0.03em;
+  }
+}
+
