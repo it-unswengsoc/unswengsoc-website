@@ -9,6 +9,77 @@ interface NavbarProps {
   hidden?: boolean;
 }
 
+// Corner bracket component for active state
+function CornerBrackets({ visible }: { visible: boolean }) {
+  const borderColor = '#4191dc';
+
+  return (
+    <motion.div
+      className="absolute inset-0 pointer-events-none"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: visible ? 1 : 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* Top-left corner */}
+      <span
+        className="absolute border-[2px]"
+        style={{
+          width: '10px',
+          height: '10px',
+          top: '-4px',
+          left: '-6px',
+          borderColor: borderColor,
+          borderRight: 'none',
+          borderBottom: 'none',
+          filter: `drop-shadow(0 0 4px ${borderColor})`
+        }}
+      />
+      {/* Top-right corner */}
+      <span
+        className="absolute border-[2px]"
+        style={{
+          width: '10px',
+          height: '10px',
+          top: '-4px',
+          right: '-6px',
+          borderColor: borderColor,
+          borderLeft: 'none',
+          borderBottom: 'none',
+          filter: `drop-shadow(0 0 4px ${borderColor})`
+        }}
+      />
+      {/* Bottom-left corner */}
+      <span
+        className="absolute border-[2px]"
+        style={{
+          width: '10px',
+          height: '10px',
+          bottom: '-4px',
+          left: '-6px',
+          borderColor: borderColor,
+          borderRight: 'none',
+          borderTop: 'none',
+          filter: `drop-shadow(0 0 4px ${borderColor})`
+        }}
+      />
+      {/* Bottom-right corner */}
+      <span
+        className="absolute border-[2px]"
+        style={{
+          width: '10px',
+          height: '10px',
+          bottom: '-4px',
+          right: '-6px',
+          borderColor: borderColor,
+          borderLeft: 'none',
+          borderTop: 'none',
+          filter: `drop-shadow(0 0 4px ${borderColor})`
+        }}
+      />
+    </motion.div>
+  );
+}
+
 export default function Navbar({ currentScreen, onNavigate, hidden = false }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -39,15 +110,17 @@ export default function Navbar({ currentScreen, onNavigate, hidden = false }: Na
           <div className="hidden md:flex pointer-events-auto absolute top-6 right-6 gap-6 text-m tracking-widest uppercase">
             <button
               onClick={() => onNavigate('blueprint')}
-              className={`transition-colors font-bold ${currentScreen === 'blueprint' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+              className={`relative transition-colors font-bold px-2 py-1 ${currentScreen === 'blueprint' ? 'text-white' : 'text-white/60 hover:text-white'}`}
             >
-              [ Blueprint ]
+              <CornerBrackets visible={currentScreen === 'blueprint'} />
+              Blueprint
             </button>
             <button
               onClick={() => onNavigate('contact')}
-              className={`transition-colors font-bold ${currentScreen === 'contact' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+              className={`relative transition-colors font-bold px-2 py-1 ${currentScreen === 'contact' ? 'text-white' : 'text-white/60 hover:text-white'}`}
             >
-              [ Contact ]
+              <CornerBrackets visible={currentScreen === 'contact'} />
+              Contact
             </button>
           </div>
 
@@ -72,15 +145,17 @@ export default function Navbar({ currentScreen, onNavigate, hidden = false }: Na
                 <div className="flex flex-col gap-4 text-sm tracking-widest uppercase">
                   <button
                     onClick={() => handleNavigate('blueprint')}
-                    className={`text-left transition-colors font-bold ${currentScreen === 'blueprint' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+                    className={`relative text-left transition-colors font-bold px-2 py-1 ${currentScreen === 'blueprint' ? 'text-white' : 'text-white/60 hover:text-white'}`}
                   >
-                    [ Blueprint ]
+                    <CornerBrackets visible={currentScreen === 'blueprint'} />
+                    Blueprint
                   </button>
                   <button
                     onClick={() => handleNavigate('contact')}
-                    className={`text-left transition-colors font-bold ${currentScreen === 'contact' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+                    className={`relative text-left transition-colors font-bold px-2 py-1 ${currentScreen === 'contact' ? 'text-white' : 'text-white/60 hover:text-white'}`}
                   >
-                    [ Contact ]
+                    <CornerBrackets visible={currentScreen === 'contact'} />
+                    Contact
                   </button>
                 </div>
               </motion.div>

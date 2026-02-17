@@ -110,6 +110,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         animationDelay={0.2}
         disableEntrance={disableEntrance}
         cornerOffset={20}
+        tooltipOffset={{ y: -120 }}
       >
         {(isHovered) => (
           <AnimatedSprite
@@ -216,6 +217,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         animationDelay={0.8}
         disableEntrance={disableEntrance}
         cornerOffset={-65}
+        tooltipOffset={{ y: -120 }}
       >
         {(isHovered) => (
           <AnimatedSprite

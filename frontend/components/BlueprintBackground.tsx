@@ -58,6 +58,7 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
   const strokeColor = 'rgba(65, 145, 220, 0.4)';
   const strokeColorDim = 'rgba(65, 145, 220, 0.25)';
   const strokeColorBright = 'rgba(65, 145, 220, 0.35)';
+  const neonGlowColor = '#4191dc';
 
   // Connection line directions
   const directions = [
@@ -176,6 +177,13 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
     });
     timelineRef.current = tl;
 
+    // All drawable elements for glow effect
+    const allDrawables = svg.querySelectorAll('.svg-draw');
+    const neonFilter = `drop-shadow(0 0 6px ${neonGlowColor})`;
+
+    // Set initial glow on all elements
+    gsap.set(allDrawables, { filter: neonFilter });
+
     // Phase 1: Grid background fades in
     tl.to(gridRef.current, { opacity: 1, duration: 0.5 }, 0);
 
@@ -217,6 +225,13 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
 
     // Phase 11: Text annotations fade in
     tl.to(annotationsRef.current, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 1.6);
+
+    // Phase 12: Smoothly fade out neon glow
+    tl.to(allDrawables, {
+      filter: 'drop-shadow(0 0 0px transparent)',
+      duration: 1.5,
+      ease: 'power1.out'
+    }, 1.8);
 
     return () => {
       tl.kill();

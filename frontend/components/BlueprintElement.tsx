@@ -25,6 +25,7 @@ interface BlueprintElementProps {
   id: string;
   label: string;
   description?: string;
+  tooltipImage?: string;
   children: ReactNode | ((isHovered: boolean) => ReactNode);
   style: React.CSSProperties;
   labelPosition: 'top' | 'bottom' | 'left' | 'right';
@@ -41,6 +42,7 @@ export default function BlueprintElement({
   id,
   label,
   description,
+  tooltipImage,
   children,
   style,
   labelPosition,
@@ -142,16 +144,15 @@ export default function BlueprintElement({
   const getTooltipStyles = (): React.CSSProperties => {
     const base: React.CSSProperties = {
       position: 'absolute',
-      padding: '16px 20px',
+      padding: '20px',
       background: 'rgba(10, 25, 41, 0.98)',
       border: '1px solid rgba(65, 145, 220, 0.4)',
-      borderRadius: '4px',
+      borderRadius: '6px',
       backdropFilter: 'blur(12px)',
       zIndex: 1000,
       pointerEvents: 'none',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(65, 145, 220, 0.1) inset',
-      maxWidth: '240px',
-      minWidth: '180px',
+      width: '320px',
     };
 
     const xOff = tooltipOffset?.x ?? 0;
@@ -188,16 +189,57 @@ export default function BlueprintElement({
             scale: 0.8,
           }}
         >
+          {/* Image placeholder */}
+          <div
+            style={{
+              width: '100%',
+              height: '140px',
+              marginBottom: '16px',
+              borderRadius: '4px',
+              overflow: 'hidden',
+              border: '1px solid rgba(65, 145, 220, 0.2)',
+              background: 'rgba(65, 145, 220, 0.05)',
+            }}
+          >
+            {tooltipImage ? (
+              <img
+                src={tooltipImage}
+                alt={label}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'rgba(65, 145, 220, 0.4)',
+                  fontSize: '12px',
+                  fontFamily: "'Courier New', monospace",
+                  letterSpacing: '1px',
+                }}
+              >
+                [ IMAGE ]
+              </div>
+            )}
+          </div>
+
           <div
             ref={labelRef}
             style={{
               fontFamily: 'var(--font-inter), sans-serif',
-              fontSize: 'clamp(0.8rem, 1.8vw, 1rem)',
+              fontSize: '1.1rem',
               fontWeight: 700,
               letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#ffffff',
-              marginBottom: description ? '8px' : 0,
+              marginBottom: description ? '10px' : 0,
               opacity: 0,
               transform: 'translateY(-10px)',
             }}
@@ -209,12 +251,12 @@ export default function BlueprintElement({
               ref={descRef}
               style={{
                 fontFamily: "'Courier New', monospace",
-                fontSize: 'clamp(0.8rem, 1.5vw, 0.8rem)',
+                fontSize: '0.9rem',
                 color: 'rgba(255, 255, 255, 0.75)',
-                lineHeight: 1.5,
+                lineHeight: 1.6,
                 opacity: 0,
                 transform: 'translateY(-5px)',
-                fontWeight: 700,
+                fontWeight: 500,
               }}
             >
               {description}
@@ -223,10 +265,10 @@ export default function BlueprintElement({
           <div
             style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: 'clamp(0.55rem, 1vw, 0.65rem)',
+              fontSize: '0.75rem',
               color: 'rgba(65, 145, 220, 0.9)',
-              marginTop: '10px',
-              paddingTop: '8px',
+              marginTop: '14px',
+              paddingTop: '10px',
               borderTop: '1px solid rgba(65, 145, 220, 0.15)',
               letterSpacing: '1px',
               fontWeight: 900,
@@ -252,7 +294,7 @@ export default function BlueprintElement({
         }}
       />
 
-      {/* Decorative corner brackets */}
+      {/* Decorative corner brackets with neon glow */}
       {isHovered && (
         <>
           <div style={{
@@ -261,8 +303,9 @@ export default function BlueprintElement({
             left: offsets.topLeft.x,
             width: '16px',
             height: '16px',
-            borderTop: '1.5px solid rgba(65, 145, 220, 0.6)',
-            borderLeft: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderTop: '2px solid #4191dc',
+            borderLeft: '2px solid #4191dc',
+            filter: 'drop-shadow(0 0 12px #6bb3ff)',
           }} />
           <div style={{
             position: 'absolute',
@@ -270,8 +313,9 @@ export default function BlueprintElement({
             right: offsets.topRight.x,
             width: '16px',
             height: '16px',
-            borderTop: '1.5px solid rgba(65, 145, 220, 0.6)',
-            borderRight: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderTop: '2px solid #4191dc',
+            borderRight: '2px solid #4191dc',
+            filter: 'drop-shadow(0 0 12px #6bb3ff)',
           }} />
           <div style={{
             position: 'absolute',
@@ -279,8 +323,9 @@ export default function BlueprintElement({
             left: offsets.bottomLeft.x,
             width: '16px',
             height: '16px',
-            borderBottom: '1.5px solid rgba(65, 145, 220, 0.6)',
-            borderLeft: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderBottom: '2px solid #4191dc',
+            borderLeft: '2px solid #4191dc',
+            filter: 'drop-shadow(0 0 12px #6bb3ff)',
           }} />
           <div style={{
             position: 'absolute',
@@ -288,8 +333,9 @@ export default function BlueprintElement({
             right: offsets.bottomRight.x,
             width: '16px',
             height: '16px',
-            borderBottom: '1.5px solid rgba(65, 145, 220, 0.6)',
-            borderRight: '1.5px solid rgba(65, 145, 220, 0.6)',
+            borderBottom: '2px solid #4191dc',
+            borderRight: '2px solid #4191dc',
+            filter: 'drop-shadow(0 0 12px #6bb3ff)',
           }} />
         </>
       )}
