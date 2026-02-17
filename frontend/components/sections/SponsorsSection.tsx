@@ -11,10 +11,10 @@ interface Sponsor {
 const sponsors: Sponsor[] = [
   { name: 'Jane Street', logo: '/sponsors/jane-street.png', url: 'https://www.janestreet.com/', invert: true, scale: 0.7},
   { name: 'BHP', logo: '/sponsors/bhp.png', url: 'https://www.bhp.com/', scale: 0.4 },
-  { name: 'EYPS', logo: '/sponsors/ey-ps.svg', url: 'https://www.ey.com/en_au/services/strategy/parthenon', invert: true, scale: 1. },
+  { name: 'EYPS', logo: '/sponsors/ey-ps.svg', url: 'https://www.ey.com/en_au/services/strategy/parthenon', invert: true, scale: 1 },
   { name: 'Optiver', logo: '/sponsors/optiver.svg', url: 'https://www.optiver.com/', scale: 0.8},
   { name: 'Stantec', logo: '/sponsors/stantec.png', url: 'https://www.stantec.com/', invert: true, scale: 1.8 },
-  { name: 'Partners in Performance', logo: '/sponsors/pip.png', url: 'https://www.partnersinperformance.com/', scale: 1.8, invert: true},
+  { name: 'Partners in Performance', logo: '/sponsors/pip.png', url: 'https://www.partnersinperformance.com/', scale: 1, invert: true},
   { name: 'Engineers Australia', logo: '/sponsors/engineers-australia.png', url: 'https://www.engineersaustralia.org.au/', invert: true, scale: 1.2},
   { name: 'Atlassian', logo: '/sponsors/atlassian.svg.png', url: 'https://www.atlassian.com/' },
   { name: 'Westpac', logo: '/sponsors/westpac.png', url: 'https://www.westpac.com.au/', scale: 1.4, invert: true },
