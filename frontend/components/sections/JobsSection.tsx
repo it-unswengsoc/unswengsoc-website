@@ -39,15 +39,15 @@ export default function JobsSection() {
         {jobs.map((job) => (
           <div
             key={job.title}
-            className="border border-[rgba(65,145,220,0.15)] p-4 bg-[rgba(10,25,41,0.6)]"
+            className="border border-[rgba(65,145,220,0.15)] p-8 bg-[rgba(10,25,41,0.6)] hover:bg-[rgba(10,25,41,0.8)] hover:border-[rgba(65,145,220,0.5)] hover:scale-105 transition-all duration-200"
           >
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h3 className="text-white font-medium">{job.title}</h3>
-                <p className="text-xs text-white font-light">{job.company}</p>
+                <h3 className="text-white font-medium text-lg">{job.title}</h3>
+                <p className="text-m text-white font-bold mt-2 ">{job.company}</p>
               </div>
               <span className={cn(
-                'text-xs px-2 py-1 rounded font-light',
+                'text-sm px-2 py-1 rounded font-light',
                 job.type === 'internship' && 'bg-[rgba(65,145,220,0.2)] text-[#4191dc]',
                 job.type === 'graduate' && 'bg-[rgba(100,200,100,0.2)] text-[#64c864]',
                 job.type === 'part-time' && 'bg-[rgba(200,150,50,0.2)] text-[#c89632]'

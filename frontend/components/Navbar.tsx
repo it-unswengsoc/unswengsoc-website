@@ -32,20 +32,20 @@ export default function Navbar({ currentScreen, onNavigate, hidden = false }: Na
             onClick={() => handleNavigate('title')}
             className="pointer-events-auto absolute top-4 md:top-6 left-4 md:left-6 hover:opacity-80 transition-opacity"
           >
-            <span className="tracking-widest text-xs md:text-sm text-white uppercase font-medium">EngSoc</span>
+            <span className="tracking-widest text-lg md:text-lg text-white uppercase font-extrabold">EngSoc</span>
           </button>
 
           {/* Desktop Nav links */}
-          <div className="hidden md:flex pointer-events-auto absolute top-6 right-6 gap-6 text-sm tracking-widest uppercase">
+          <div className="hidden md:flex pointer-events-auto absolute top-6 right-6 gap-6 text-m tracking-widest uppercase">
             <button
               onClick={() => onNavigate('blueprint')}
-              className={`transition-colors ${currentScreen === 'blueprint' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+              className={`transition-colors font-bold ${currentScreen === 'blueprint' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
             >
               [ Blueprint ]
             </button>
             <button
               onClick={() => onNavigate('contact')}
-              className={`transition-colors ${currentScreen === 'contact' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+              className={`transition-colors font-bold ${currentScreen === 'contact' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
             >
               [ Contact ]
             </button>
@@ -72,13 +72,13 @@ export default function Navbar({ currentScreen, onNavigate, hidden = false }: Na
                 <div className="flex flex-col gap-4 text-sm tracking-widest uppercase">
                   <button
                     onClick={() => handleNavigate('blueprint')}
-                    className={`text-left transition-colors ${currentScreen === 'blueprint' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+                    className={`text-left transition-colors font-bold ${currentScreen === 'blueprint' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
                   >
                     [ Blueprint ]
                   </button>
                   <button
                     onClick={() => handleNavigate('contact')}
-                    className={`text-left transition-colors ${currentScreen === 'contact' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
+                    className={`text-left transition-colors font-bold ${currentScreen === 'contact' ? 'text-[#4191dc]' : 'text-white/60 hover:text-white'}`}
                   >
                     [ Contact ]
                   </button>
