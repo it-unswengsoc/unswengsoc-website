@@ -29,10 +29,11 @@ function TitleScreen({ onOpenBlueprint }: { onOpenBlueprint: () => void }) {
         <TitleAnimations />
       </div>
 
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
+      <div className="relative z-10 h-full flex flex-col items-start justify-center px-8 md:px-16 lg:px-24">
         <div className="mb-8">
           <TrueFocus
-            sentence="UNSW ENGINEERING SOCIETY"
+            sentence="UNSW|ENGINEERING SOCIETY"
+            lineSeparator="|"
             manualMode={false}
             blurAmount={5}
             borderColor="#4191dc"
@@ -41,7 +42,7 @@ function TitleScreen({ onOpenBlueprint }: { onOpenBlueprint: () => void }) {
             pauseBetweenAnimations={1.5}
           />
         </div>
-        <p className="subtitle mb-8 text-center">Innovate. Create. Engineer.</p>
+        <p className="subtitle mb-8">Innovate. Create. Engineer.</p>
         <button onClick={onOpenBlueprint} className="open-blueprint-btn">
           Open Blueprint
         </button>
