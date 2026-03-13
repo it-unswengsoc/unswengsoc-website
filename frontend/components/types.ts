@@ -49,6 +49,9 @@ export interface Job {
   company: string;
   type: 'internship' | 'graduate' | 'part-time';
   description: string;
+  location?: string;
+  link?: string;
+  logo?: string;
 }
 
 export interface Program {
