@@ -56,4 +56,5 @@ export interface Program {
   description: string;
   status: 'open' | 'coming-soon' | 'closed';
   image?: string;
+  link?: string;
 }
