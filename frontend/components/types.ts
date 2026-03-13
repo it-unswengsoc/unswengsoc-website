@@ -36,6 +36,7 @@ export interface Event {
   date: string;
   description: string;
   image?: string;
+  link?: string;
 }
 
 export interface Sponsor {

@@ -61,11 +61,39 @@ interface BlueprintMapProps {
 export default function BlueprintMap({ onSectionClick, disableEntrance = false }: BlueprintMapProps) {
   return (
     <div className="blueprint-canvas absolute inset-0">
+      {/* HUD prompt */}
+      <div style={{
+        position: 'absolute',
+        top: '18px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 10,
+        pointerEvents: 'none',
+        userSelect: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '8px 18px',
+        background: 'rgba(10, 25, 41, 0.7)',
+        border: '1px solid rgba(65, 145, 220, 0.45)',
+        fontFamily: "'Courier New', monospace",
+        fontSize: 'clamp(10px, 1.2vw, 13px)',
+        fontWeight: 700,
+        color: 'rgba(65, 145, 220, 0.85)',
+        letterSpacing: '2px',
+        textTransform: 'uppercase',
+        whiteSpace: 'nowrap',
+      }}>
+        <span style={{ color: 'rgba(65, 145, 220, 0.5)', fontSize: '0.85em' }}>&#x25B6;</span>
+        click icons to explore
+      </div>
+
       {/* Events - Flask Sprite */}
       <BlueprintElement
         id="events"
         label="events"
         description="Discover our networking events, workshops, and social activities"
+        tooltipImage="/events.jpg"
         style={{
           position: 'absolute',
           left: '16%',
@@ -98,6 +126,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         id="sponsors"
         label="sponsors"
         description="Meet our industry partners and sponsorship opportunities"
+        tooltipImage="/spons.jpg"
         style={{
           position: 'absolute',
           left: '15%',
@@ -137,6 +166,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
           id="about"
           label="about us"
           description="Learn about our mission, team, and what we do for engineers"
+          tooltipImage="/about-us.jpg"
           style={{
             position: 'relative',
             width: 'clamp(200px, 30vw, 400px)',
@@ -173,6 +203,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         id="programs"
         label="programs"
         description="Explore mentorship, career development, and student programs"
+        tooltipImage="/programs.jpg"
         style={{
           position: 'absolute',
           right: '15%',
@@ -205,6 +236,7 @@ export default function BlueprintMap({ onSectionClick, disableEntrance = false }
         id="jobs"
         label="jobs board"
         description="Browse internships, graduate roles, and career opportunities"
+        tooltipImage="/jobs-board.jpg"
         style={{
           position: 'absolute',
           right: '18%',

@@ -147,7 +147,7 @@ export default function DetailView({ data, section, onClose }: DetailViewProps) 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="max-w-4xl w-full md:ml-8 lg:ml-16 xl:ml-24"
+          className="max-w-5xl w-full md:ml-8 lg:ml-16 xl:ml-24"
         >
           {/* Section title */}
           <div className="mb-6 md:mb-8">

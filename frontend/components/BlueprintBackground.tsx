@@ -548,13 +548,13 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
         {/* Approvals */}
         <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY - 12, fontSize: 10 }}>APPROVALS</div>
         <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 13, fontSize: 7 }}>
-          <span style={{ display: 'inline-block', width: 58 }}>DRAWN</span>
-          <span style={{ display: 'inline-block', width: 68 }}>W. MOY</span>
+          <span style={{ display: 'inline-block', width: 58 }}>APPROVED</span>
+          <span style={{ display: 'inline-block', width: 68 }}>Z. ABRAN</span>
           <span>01.10.26</span>
         </div>
         <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 31, fontSize: 7 }}>
-          <span style={{ display: 'inline-block', width: 58 }}>CHECKED</span>
-          <span style={{ display: 'inline-block', width: 68 }}>Z. ABRAN</span>
+          <span style={{ display: 'inline-block', width: 58 }}>APPROVED</span>
+          <span style={{ display: 'inline-block', width: 68 }}>L. VAN</span>
           <span>01.15.26</span>
         </div>
         <div className="blueprint-annotation" style={{ left: approvalX, top: revTableY + 49, fontSize: 7 }}>
