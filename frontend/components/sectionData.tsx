@@ -10,7 +10,7 @@ import {
 export const sectionDetails: Record<string, SectionData> = {
   about: {
     title: 'About Us',
-    subtitle: 'Engineering excellence since 1963',
+    subtitle: 'Engineering excellence since 2011',
     content: <AboutSection />,
   },
   events: {
