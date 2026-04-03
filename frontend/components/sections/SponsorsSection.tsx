@@ -97,7 +97,7 @@ export default function SponsorsSection() {
       <div className="border border-[rgba(65,145,220,0.3)] p-4 bg-[rgba(65,145,220,0.05)] mt-10 p-5">
         <p className="text-xl text-white text-center font-bold">
           Interested in partnering with us? <br />
-          <span className="text-[#4191dc]">sponsorship@engsoc.unsw.edu.au</span>
+          <span className="text-[#4191dc]">sponsorships@unswengsoc.com</span>
         </p>
       </div>
     </div>
