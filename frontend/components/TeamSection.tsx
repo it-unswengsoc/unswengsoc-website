@@ -23,6 +23,7 @@ const executives: Executive[] = [
   { name: 'Jesse Vella', role: 'Vice President Sponsorships', initials: 'JV', image: '/team/jesse-vella.jpg', degree: 'Electrical Engineering (Honours) / Computer Science', linkedin: 'https://www.linkedin.com/in/jesse-vella66/' },
   { name: 'Sameen Jubayed', role: 'Vice President Programs', initials: 'SJ', image: '/team/sameen.png', degree: 'Mechanical Engineering (Honours) / Computer Science ', linkedin: 'https://www.linkedin.com/in/sameen-jubayed-815142313/' },
   { name: 'Sean Wang', role: 'Vice President Socials', initials: 'SW', image: '/team/sean-wang.jpg', degree: 'Biomedical Engineering (Honours)', linkedin: 'https://www.linkedin.com/in/sean-wang-a507ab265/' },
+  { name: 'Rianna Patrabansh', role: 'Vice President Human Resources', initials: 'RP', degree: 'Bachelors Bioinformatics Engineering' },
 ];
 
 export default function TeamSection() {
