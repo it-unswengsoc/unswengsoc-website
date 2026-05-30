@@ -8,6 +8,7 @@ const events: Event[] = [
     description: 'Join us at Engsoc’s annual ✨High Tea with Industry✨ where you can network 🗣️ with company representatives and gain those valuable linkedin connections 🤝. Discover new opportunities and gain insights into the recruitment process 💼 from potential future employers.',
     image: '/events/high-tea-with-industry.jpg',
     link: 'https://www.facebook.com/share/1CdQ8TAQ4z/',
+    //my change meow
   },
   {
     title: 'Director Meet n Greet',
