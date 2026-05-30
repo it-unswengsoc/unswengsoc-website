@@ -3,32 +3,11 @@ import { Event } from '../types';
 
 const events: Event[] = [
   {
-    title: 'High Tea with Industry',
-    date: 'April 2, 2026',
-    description: 'Join us at Engsoc’s annual ✨High Tea with Industry✨ where you can network 🗣️ with company representatives and gain those valuable linkedin connections 🤝. Discover new opportunities and gain insights into the recruitment process 💼 from potential future employers.',
-    image: '/events/high-tea-with-industry.jpg',
-    link: 'https://www.facebook.com/share/1CdQ8TAQ4z/',
-  },
-  {
-    title: 'Director Meet n Greet',
-    date: 'March 5, 2026',
-    description: '🔥 Come along to our 𝐃𝐢𝐫𝐞𝐜𝐭𝐨𝐫 𝐌𝐞𝐞𝐭 𝐧 𝐆𝐫𝐞𝐞𝐭 and hear directly from each portfolio about what they do, what they’re planning, and how you can get involved. Ask questions, suss out where you’d fit best, and grab a snag while you’re at it 🌭',
-    image: '/events/dmg.jpg',
-    link: 'https://fb.me/e/3VmejSaJV',
-  },
-  {
-    title: '2026 Subcommittee Recruitment',
-    date: 'March 10, 2026',
-    description: 'Your chance to join the team is here - 𝐄𝐧𝐠𝐒𝐨𝐜 𝐒𝐮𝐛𝐜𝐨𝐦𝐦𝐢𝐭𝐭𝐞𝐞 𝐀𝐩𝐩𝐥𝐢𝐜𝐚𝐭𝐢𝐨𝐧𝐬 𝐚𝐫𝐞 𝐧𝐨𝐰 𝐨𝐩𝐞𝐧! Want to run flagship events, help bring in sponsors, design content that actually pops, or pick up skills that’ll carry into internships and beyond? 𝐓𝐡𝐞𝐫𝐞’𝐬 𝐚 𝐫𝐨𝐥𝐞 𝐭𝐡𝐚𝐭 𝐟𝐢𝐭𝐬 𝐲𝐨𝐮𝐫 𝐛𝐮𝐢𝐥𝐝.',
-    image: '/events/26-subcom-recruitment.jpg',
-    link: 'https://fb.me/e/485WGbxVg',
-  },
-  {
-    title: 'All Years Camp: The Odyssey',
-    date: 'Feb 27, 2026',
-    description: 'Across 𝐓𝐇𝐑𝐄𝐄 𝐟𝐚𝐭𝐞-𝐜𝐡𝐚𝐧𝐠𝐢𝐧𝐠 𝐝𝐚𝐲𝐬 🌄 and 𝐓𝐖𝐎 𝐦𝐲𝐭𝐡-𝐰𝐨𝐫𝐭𝐡𝐲 𝐧𝐢𝐠𝐡𝐭𝐬 🌙, prepare for a quest so iconic you’ll be saying 🗣️ “𝘣𝘳𝘰… 𝘵𝘩𝘢𝘵 𝘤𝘢𝘮𝘱 𝘸𝘢𝘴 𝘢𝘤𝘵𝘶𝘢𝘭𝘭𝘺 𝘢 𝘭𝘦𝘨𝘦𝘯𝘥” 😤🔥. Rally ⚔️ your fellow heroes 🫂, find your divine crew 👑🤝, and uncover bonds stronger than Zeus’ lightning ⚡️ — because every demigod needs their party.',
-    image: '/events/ayc.jpg',
-    link: 'https://fb.me/e/5A6dJelu7',
+    title: 'The Push-Up Challenge',
+    date: 'June 3rd - June 26th, 2026',
+    description: 'Join the Team of Engineering Societies at UNSW in one of the biggest mental health and fitness events in Australia 💪💪. The goal is to take on 3,307 push-ups over 24 days to honour the 3307 lives lost to suicide in Australia in 2024.💙🧡',
+    image: '/events/push-upchallenge.png',
+    link: 'https://www.facebook.com/events/1310540057881685',
   },
 ];
 
