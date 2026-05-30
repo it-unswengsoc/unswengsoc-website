@@ -3,11 +3,13 @@ import { Event } from '../types';
 
 const events: Event[] = [
   {
+    // this is my change
     title: 'High Tea with Industry',
     date: 'April 2, 2026',
     description: 'Join us at Engsoc’s annual ✨High Tea with Industry✨ where you can network 🗣️ with company representatives and gain those valuable linkedin connections 🤝. Discover new opportunities and gain insights into the recruitment process 💼 from potential future employers.',
     image: '/events/high-tea-with-industry.jpg',
     link: 'https://www.facebook.com/share/1CdQ8TAQ4z/',
+    //dwadawdawdw 
   },
   {
     title: 'Director Meet n Greet',
