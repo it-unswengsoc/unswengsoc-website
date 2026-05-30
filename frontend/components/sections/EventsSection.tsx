@@ -9,6 +9,13 @@ const events: Event[] = [
     image: '/events/push-upchallenge.png',
     link: 'https://www.facebook.com/events/1310540057881685',
   },
+  {
+    title: 'Celestial Tides Cruise',
+    date: 'June 19th, 2026',
+    description: "The stars have aligned, the tide is rising, and the harbour is calling your name. 🌊✨ Unlimited drinks 🍺🍷, a photobooth to immortalise the moment 📸, and an afterparty that'll keep the stars burning long after the cruise docks. Because the night doesn't end when the tide comes in, it's only just beginning. 🎉 ",
+    image: '/events/cruise.png',
+    link: 'https://www.facebook.com/events/964848139917940',
+  },
 ];
 
 // Parse a date string like "March 15, 2026" or "April 8-9, 2026" into a Date.
