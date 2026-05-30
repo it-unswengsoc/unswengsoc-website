@@ -12,7 +12,7 @@ const events: Event[] = [
   {
     title: 'Director Meet n Greet',
     date: 'March 5, 2026',
-    description: '🔥 Come along to our 𝐃𝐢𝐫𝐞𝐜𝐭𝐨𝐫 𝐌𝐞𝐞𝐭 𝐧 𝐆𝐫𝐞𝐞𝐭 and hear directly from each portfolio about what they do, what they’re planning, and how you can get involved. Ask questions, suss out where you’d fit best, and grab a snag while you’re at it 🌭',
+    description: '🔥 Come along to our 𝐃𝐢𝐫𝐞𝐜𝐭𝐨𝐫 𝐌𝐞𝐞𝐭 𝐧 𝐆𝐫𝐞𝐞𝐭 and hear directly from each portfolio about what they do, what they’re planning, and how you can get involved. Ask questions, suss out where you’d fit best, and grab a snag while you’re at it 🌭 this is the change',
     image: '/events/dmg.jpg',
     link: 'https://fb.me/e/3VmejSaJV',
   },
