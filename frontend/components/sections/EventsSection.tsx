@@ -16,6 +16,13 @@ const events: Event[] = [
     image: '/events/cruise.png',
     link: 'https://www.facebook.com/events/964848139917940',
   },
+  {
+    title: "Smi-SKI's Escape",
+    date: 'September 4th - September 7th',
+    description: "⛷️❄️ 𝐄𝐍𝐆𝐒𝐎𝐂 𝐏𝐑𝐄𝐒𝐄𝐍𝐓𝐒: 𝐒𝐌𝐈𝐒𝐊𝐈’𝐒 𝐄𝐒𝐂𝐀𝐏𝐄! 👻🏔️ Pack your gear and get ready for an unforgettable few days in the snow! Whether you're a seasoned skier 🎿, a first-time snowboarder 🏂, or simply joining for the mountain views 🏔️ and great company 🫶, the EngSoc Smiski Ski Trip is the perfect winter getaway.",
+    image: '/events/ski_trip.png',
+    link: 'https://www.facebook.com/events/1047948830988807',
+  },
 ];
 
 // Parse a date string like "March 15, 2026" or "April 8-9, 2026" into a Date.
