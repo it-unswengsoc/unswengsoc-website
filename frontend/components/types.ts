@@ -8,7 +8,7 @@ import { ReactNode } from 'react';
 // - sponsors: Sponsors (helmet)
 export type Section = 'about' | 'events' | 'jobs' | 'programs' | 'sponsors' | null;
 
-export type Screen = 'title' | 'blueprint' | 'contact';
+export type Screen = 'title' | 'blueprint' | 'merch' | 'contact';
 
 export interface SectionData {
   title: string;
@@ -60,4 +60,42 @@ export interface Program {
   status: 'open' | 'coming-soon' | 'closed';
   image?: string;
   link?: string;
+}
+
+export interface SizeStockEntry {
+  /** Units produced for this size. */
+  stock: number;
+  /** The Stripe Price ID for this exact size/colourway SKU. */
+  stripePriceId: string;
+}
+
+export interface ProductVariant {
+  name: string;
+  hex: string;
+  accentHex: string;
+  /** Primary/default photo — the styled campaign shot. */
+  image: string;
+  /** Plain, uncluttered product photo — the second slide on the detail page, for a clearer look at the actual garment. */
+  secondaryImage?: string;
+  /** URL slug for this colourway's own /merch/[slug] purchase page. */
+  slug: string;
+  /** Per-size stock + the Stripe Price ID to buy that size, e.g. { S: { stock: 14, stripePriceId: 'price_...' } }. */
+  sizeStock?: Record<string, SizeStockEntry>;
+}
+
+export interface Product {
+  title: string;
+  price: string;
+  description: string;
+  status: 'in-stock' | 'coming-soon' | 'sold-out';
+  image?: string;
+  link?: string;
+  variants?: ProductVariant[];
+  sizes?: string[];
+  totalStock?: number;
+  specs?: string[];
+  /** URL slug for this product's own /merch/[slug] purchase page (products with no colourways). */
+  slug?: string;
+  /** The Stripe Price ID for products with no size/colourway variants (e.g. the keychain). */
+  stripePriceId?: string;
 }

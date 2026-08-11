@@ -39,14 +39,23 @@ export default function BlueprintBackground({ animateIn = false, onDrawComplete 
   const idleAnimationRef = useRef<gsap.core.Timeline | null>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  // Track dimensions
+  // Track dimensions (debounced so window-drag resizing doesn't thrash the whole animation)
   useEffect(() => {
     const update = () => {
       setDimensions({ width: window.innerWidth, height: window.innerHeight });
     };
     update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(update, 200);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   const { width, height } = dimensions;

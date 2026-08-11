@@ -29,6 +29,7 @@ function ProgramCard({ program }: { program: Program }) {
             src={program.image}
             alt={program.title}
             fill
+            sizes="(max-width: 640px) 100vw, 50vw"
             className="object-cover"
           />
         ) : (

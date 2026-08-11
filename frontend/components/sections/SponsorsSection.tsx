@@ -56,6 +56,7 @@ export default function SponsorsSection() {
                   src={sponsor.logo}
                   alt={sponsor.name}
                   fill
+                  sizes="(max-width: 640px) 50vw, 33vw"
                   className={`object-contain ${sponsor.invert ? 'brightness-0 invert' : ''}`}
                 />
               </div>
@@ -86,6 +87,7 @@ export default function SponsorsSection() {
                   src={sponsor.logo}
                   alt={sponsor.name}
                   fill
+                  sizes="(max-width: 640px) 50vw, 33vw"
                   className="object-contain"
                 />
               </div>

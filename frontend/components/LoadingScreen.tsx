@@ -119,6 +119,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
             alt="UNSW Engineering Society Logo"
             width={150}
             height={150}
+            className="w-[150px] h-[150px]"
             priority
           />
         </div>

@@ -46,6 +46,7 @@ export default function TeamSection() {
                   src={exec.image}
                   alt={exec.name}
                   fill
+                  sizes="(max-width: 768px) 128px, 192px"
                   className="object-cover"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
@@ -68,7 +69,7 @@ export default function TeamSection() {
                 rel="noopener noreferrer"
                 className="mt-4 inline-block hover:opacity-75 transition-opacity"
               >
-                <Image src="/linkedin.png" alt="LinkedIn" width={70} height={70} />
+                <Image src="/linkedin.png" alt="LinkedIn" width={139} height={43} className="h-8 w-auto object-contain" />
               </a>
             )}
           </div>

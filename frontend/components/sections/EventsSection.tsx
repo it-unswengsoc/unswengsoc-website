@@ -58,6 +58,7 @@ function EventCard({ event }: { event: Event }) {
             src={event.image}
             alt={event.title}
             fill
+            sizes="(max-width: 640px) 100vw, 50vw"
             className="object-cover"
           />
         ) : (
