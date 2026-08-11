@@ -69,8 +69,8 @@ export default function JobsSection() {
                 <p className="text-m text-white font-bold mt-2">{job.company}</p>
               </div>
               {job.logo && (
-                <div className="ml-4 flex-shrink-0">
-                  <Image src={job.logo} alt={job.company} width={80} height={40} className="object-contain" />
+                <div className="ml-4 flex-shrink-0 relative w-20 h-10">
+                  <Image src={job.logo} alt={job.company} fill sizes="80px" className="object-contain" />
                 </div>
               )}
             </div>

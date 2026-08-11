@@ -17,7 +17,7 @@ export default function Footer() {
                 alt="EngSoc Logo"
                 width={32}
                 height={32}
-                className="object-contain"
+                className="object-contain w-8 h-8"
               />
               <span className="text-white font-medium">UNSW Engineering Society</span>
             </div>

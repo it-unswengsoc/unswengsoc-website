@@ -146,57 +146,53 @@ export default function TrueFocus({
       >
         {/* Top-left corner */}
         <span
-          className="absolute border-[2px] md:border-[3px]"
+          className="absolute border-t-[2px] border-l-[2px] md:border-t-[3px] md:border-l-[3px]"
           style={{
             width: '16px',
             height: '16px',
             top: '-8px',
             left: '-8px',
-            borderColor: borderColor,
-            borderRight: 'none',
-            borderBottom: 'none',
+            borderTopColor: borderColor,
+            borderLeftColor: borderColor,
             filter: `drop-shadow(0 0 6px ${borderColor})`
           }}
         />
         {/* Top-right corner */}
         <span
-          className="absolute border-[2px] md:border-[3px]"
+          className="absolute border-t-[2px] border-r-[2px] md:border-t-[3px] md:border-r-[3px]"
           style={{
             width: '16px',
             height: '16px',
             top: '-8px',
             right: '-8px',
-            borderColor: borderColor,
-            borderLeft: 'none',
-            borderBottom: 'none',
+            borderTopColor: borderColor,
+            borderRightColor: borderColor,
             filter: `drop-shadow(0 0 6px ${borderColor})`
           }}
         />
         {/* Bottom-left corner */}
         <span
-          className="absolute border-[2px] md:border-[3px]"
+          className="absolute border-b-[2px] border-l-[2px] md:border-b-[3px] md:border-l-[3px]"
           style={{
             width: '16px',
             height: '16px',
             bottom: '-8px',
             left: '-8px',
-            borderColor: borderColor,
-            borderRight: 'none',
-            borderTop: 'none',
+            borderBottomColor: borderColor,
+            borderLeftColor: borderColor,
             filter: `drop-shadow(0 0 6px ${borderColor})`
           }}
         />
         {/* Bottom-right corner */}
         <span
-          className="absolute border-[2px] md:border-[3px]"
+          className="absolute border-b-[2px] border-r-[2px] md:border-b-[3px] md:border-r-[3px]"
           style={{
             width: '16px',
             height: '16px',
             bottom: '-8px',
             right: '-8px',
-            borderColor: borderColor,
-            borderLeft: 'none',
-            borderTop: 'none',
+            borderBottomColor: borderColor,
+            borderRightColor: borderColor,
             filter: `drop-shadow(0 0 6px ${borderColor})`
           }}
         />

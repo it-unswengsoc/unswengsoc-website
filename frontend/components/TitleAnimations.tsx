@@ -2,15 +2,28 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { usePrefersReducedMotion } from '@/lib/useReducedMotion';
 
 export default function TitleAnimations() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // This builds ~45 looping tweens (particles, circuit lines, shapes, rings) —
+    // skip the whole ambient field for users who've asked for less motion.
+    if (reducedMotion || !containerRef.current) return;
+
+    const container = containerRef.current;
+    const intervals: ReturnType<typeof setInterval>[] = [];
+    const particles: HTMLDivElement[] = [];
+    const lines: HTMLDivElement[] = [];
+    const shapes: HTMLDivElement[] = [];
+    const readouts: HTMLDivElement[] = [];
+    const rings: HTMLDivElement[] = [];
+
+    const ctx = gsap.context(() => {
 
     // Create floating particles
-    const particles: HTMLDivElement[] = [];
     for (let i = 0; i < 25; i++) {
       const particle = document.createElement('div');
       particle.style.position = 'absolute';
@@ -21,7 +34,7 @@ export default function TitleAnimations() {
       particle.style.boxShadow = '0 0 8px rgba(65, 145, 220, 0.6)';
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
-      containerRef.current.appendChild(particle);
+      container.appendChild(particle);
       particles.push(particle);
 
       // Animate particle floating
@@ -37,7 +50,6 @@ export default function TitleAnimations() {
     }
 
     // Create circuit lines
-    const lines: HTMLDivElement[] = [];
     for (let i = 0; i < 8; i++) {
       const line = document.createElement('div');
       line.style.position = 'absolute';
@@ -57,7 +69,7 @@ export default function TitleAnimations() {
         line.style.top = `${Math.random() * 50}%`;
       }
       
-      containerRef.current.appendChild(line);
+      container.appendChild(line);
       lines.push(line);
 
       // Animate line pulsing
@@ -71,7 +83,6 @@ export default function TitleAnimations() {
     }
 
     // Create geometric shapes
-    const shapes: HTMLDivElement[] = [];
     for (let i = 0; i < 5; i++) {
       const shape = document.createElement('div');
       shape.style.position = 'absolute';
@@ -89,7 +100,7 @@ export default function TitleAnimations() {
         shape.style.clipPath = 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)';
       }
       
-      containerRef.current.appendChild(shape);
+      container.appendChild(shape);
       shapes.push(shape);
 
       // Rotate and float
@@ -112,7 +123,6 @@ export default function TitleAnimations() {
     }
 
     // Create data readouts
-    const readouts: HTMLDivElement[] = [];
     const corners = [
       { top: '8%', left: '5%' },
       { top: '8%', right: '5%' },
@@ -138,27 +148,25 @@ export default function TitleAnimations() {
         </div>
       `;
       
-      if (containerRef.current) {
-        containerRef.current.appendChild(readout);
-        readouts.push(readout);
+      container.appendChild(readout);
+      readouts.push(readout);
 
-        // Animate numbers changing
-        const valueEl = readout.querySelector('.readout-value');
-        if (valueEl) {
-          const interval = setInterval(() => {
-            const newVal = Math.floor(Math.random() * 100);
-            gsap.to(valueEl, {
-              innerHTML: newVal,
-              duration: 0.3,
-              snap: { innerHTML: 1 },
-            });
-          }, 3000 + Math.random() * 2000);
-        }
+      // Animate numbers changing
+      const valueEl = readout.querySelector('.readout-value');
+      if (valueEl) {
+        const interval = setInterval(() => {
+          const newVal = Math.floor(Math.random() * 100);
+          gsap.to(valueEl, {
+            innerHTML: newVal,
+            duration: 0.3,
+            snap: { innerHTML: 1 },
+          });
+        }, 3000 + Math.random() * 2000);
+        intervals.push(interval);
       }
     });
 
     // Create pulsing rings in center
-    const rings: HTMLDivElement[] = [];
     for (let i = 0; i < 3; i++) {
       const ring = document.createElement('div');
       ring.style.position = 'absolute';
@@ -171,7 +179,7 @@ export default function TitleAnimations() {
       ring.style.border = '1px solid rgba(65, 145, 220, 0.15)';
       ring.style.pointerEvents = 'none';
       
-      containerRef.current.appendChild(ring);
+      container.appendChild(ring);
       rings.push(ring);
 
       // Pulse animation with delay
@@ -185,14 +193,18 @@ export default function TitleAnimations() {
       });
     }
 
+    }, container);
+
     return () => {
+      intervals.forEach(clearInterval);
+      ctx.revert();
       particles.forEach(p => p.remove());
       lines.forEach(l => l.remove());
       shapes.forEach(s => s.remove());
       readouts.forEach(r => r.remove());
       rings.forEach(r => r.remove());
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div

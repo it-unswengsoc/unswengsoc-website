@@ -42,6 +42,11 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   font-weight: 400;
+  /* Without this, rubber-band/bounce overscroll reveals this navy body colour
+     past the edges of a page's own content — most noticeable on the merch
+     routes, which are themed black/red/cream and don't otherwise touch this
+     shared background at all. */
+  overscroll-behavior-y: none;
 }
 
 .blueprint-box {

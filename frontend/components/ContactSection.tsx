@@ -27,10 +27,10 @@ export default function ContactSection() {
                 </div>
               </div>
               <a
-                href="mailto:contact@engsoc.unsw.edu.au"
+                href="mailto:contact@unswengsoc.com"
                 className="text-[#4191dc] hover:text-white transition-colors text-sm font-light"
               >
-                contact@engsoc.unsw.edu.au
+                contact@unswengsoc.com
               </a>
             </div>
 
