@@ -37,7 +37,7 @@ const events: Event[] = [
     image: '/events/push-upchallenge.png',
     link: 'https://www.facebook.com/events/1310540057881685',
   },
-  
+
   {
     title: 'Celestial Tides Cruise',
     date: 'June 19, 2026',
@@ -66,7 +66,7 @@ const events: Event[] = [
     image: '/events/term2_bbq.png',
     link: 'https://www.facebook.com/events/1471503034259509/',
   },
-   {
+  {
     title: 'Wings4Lyfe',
     date: 'May 10, 2026',
     description: "ENGSOC is teaming up with Red Bull’s Wings for Life World Run – a global race where 💯% of all entry fees & donations go directly to life-changing spinal cord research 🧠💙 🚨 THE TWIST? No finish line. No limits. Just YOU vs the Virtual Catcher Car 🚗💨 Run with your friends, track your pace on the app, and keep going until you’re caught 🚨!",
