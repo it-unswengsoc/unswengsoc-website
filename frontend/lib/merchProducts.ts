@@ -65,11 +65,11 @@ export const heroProduct: Product = {
         // test: price_1U37KJHXrGnNjscbW0cFPrX5
         S: { stock: 14, stripePriceId: 'price_1U36yAHXrGnNjscb6KETbHYN' },
         // test: price_1U37KKHXrGnNjscbPTQGVU08
-        M: { stock: 17, stripePriceId: 'price_1U36yBHXrGnNjscbuSFz2dbj' },
+        M: { stock: 15, stripePriceId: 'price_1U36yBHXrGnNjscbuSFz2dbj' },
         // test: price_1U37KLHXrGnNjscblHGCwLKc
-        L: { stock: 16, stripePriceId: 'price_1U36yCHXrGnNjscbnAX7xlv7' },
+        L: { stock: 15, stripePriceId: 'price_1U36yCHXrGnNjscbnAX7xlv7' },
         // test: price_1U37KMHXrGnNjscbXOXSy6Gf
-        XL: { stock: 3, stripePriceId: 'price_1U36yDHXrGnNjscbPlH3QA0u' },
+        XL: { stock: 4, stripePriceId: 'price_1U36yDHXrGnNjscbPlH3QA0u' },
       },
     },
   ],
